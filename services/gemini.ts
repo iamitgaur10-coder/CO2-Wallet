@@ -2,7 +2,6 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { ReceiptAnalysis, RecommendedRemoval } from "../types";
 
 // Initialize Gemini Client
-// The API key must be obtained exclusively from the environment variable process.env.API_KEY.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 // 1. Vision API: Receipt & Real-World Object Analysis
