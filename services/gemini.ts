@@ -2,8 +2,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { ReceiptAnalysis, RecommendedRemoval } from "../types";
 
 // Initialize Gemini Client
-const apiKey = process.env.API_KEY || ''; 
-const ai = new GoogleGenAI({ apiKey });
+// The API key must be obtained exclusively from the environment variable process.env.API_KEY.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 // 1. Vision API: Receipt & Real-World Object Analysis
 // Uses Flash for speed and high vision capability
@@ -154,7 +154,13 @@ export const generateInsights = async (
       config: {
         // Thinking config is optional for Pro but helps with "math"
         // thinkingConfig: { thinkingBudget: 2048 }, 
-        temperature: 0.7
+        temperature: 0.7,
+        safetySettings: [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" }
+        ]
       }
     });
 
