@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, Progress, cn } from '../components/UI';
-import { Plus, ArrowUpRight, Cloud, Car, Zap, Utensils, ShoppingBag, Leaf, Plane, Info, Eye } from 'lucide-react';
+import { Cloud, Car, Utensils, ShoppingBag, Leaf, Plane, Info, Eye, Loader2, Building } from 'lucide-react';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { EmissionRecord, RemovalRecord } from '../types';
 import { ReceiptUploader } from '../components/ReceiptUploader';
@@ -27,6 +28,8 @@ const balanceHistoryData = [
 export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, removals, onAddEmission, isDemo = false }) => {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
+  const [showPlaid, setShowPlaid] = useState(false);
+  const [plaidLoading, setPlaidLoading] = useState(0); // 0: init, 1: auth, 2: scanning, 3: success
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 100);
@@ -46,6 +49,33 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
       onAddEmission(newRecord);
   };
 
+  const startPlaidSimulation = () => {
+      if (isDemo) return;
+      setShowPlaid(true);
+      setPlaidLoading(1);
+      setTimeout(() => setPlaidLoading(2), 1500);
+      setTimeout(() => {
+          setPlaidLoading(3);
+          onAddEmission({
+              id: crypto.randomUUID(),
+              source: 'Uber Trip (Detected)',
+              amountKg: 12.4,
+              date: new Date().toISOString(),
+              type: 'transport',
+              method: 'plaid_transaction'
+          });
+          onAddEmission({
+            id: crypto.randomUUID(),
+            source: 'Starbucks Coffee',
+            amountKg: 0.3,
+            date: new Date().toISOString(),
+            type: 'food',
+            method: 'plaid_transaction'
+        });
+      }, 3500);
+      setTimeout(() => setShowPlaid(false), 4500);
+  };
+
   const activity = [
       ...emissions.map(e => ({ ...e, isRemoval: false, title: e.source })),
       ...removals.map(r => ({ ...r, id: r.id, amountKg: r.amount_kg, source: r.project_name, isRemoval: true, type: 'removal', date: r.date }))
@@ -61,9 +91,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
             <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-3 rounded-lg flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <Eye size={18} />
-                    <span className="font-bold text-sm">Observer Mode Active</span>
+                    <span className="font-bold text-sm">Observer Mode Active. Read Only.</span>
                 </div>
-                <Button size="sm" variant="primary" className="h-8" onClick={() => navigate('/onboarding')}>Create Real Account</Button>
+                <Button size="sm" variant="primary" className="h-8" onClick={() => navigate('/onboarding')}>Create Account</Button>
             </div>
         )}
 
@@ -74,10 +104,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                 <p className="text-muted text-sm mt-1">Real-time atmospheric balance sheet.</p>
             </div>
             <div className="flex items-center gap-3">
-                 <Button variant="outline" size="sm" onClick={() => window.open('https://plaid.com', '_blank')}>
-                    Connect Bank (Plaid)
+                 <Button variant="outline" size="sm" onClick={startPlaidSimulation} disabled={isDemo} title={isDemo ? "Disabled in Demo" : "Connect Bank"}>
+                    {isDemo ? "Bank Locked (Demo)" : "Connect Bank (Plaid)"}
                  </Button>
-                 <Button variant="primary" size="sm" onClick={() => navigate('/remove')}>
+                 <Button variant="primary" size="sm" onClick={() => navigate('/remove')} disabled={isDemo} title={isDemo ? "Disabled in Demo" : "Neutralize"}>
                     Neutralize Debt
                  </Button>
             </div>
@@ -159,7 +189,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
             <div className="md:col-span-2">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-white">Activity Feed</h2>
-                    <Button variant="ghost" size="sm">View All</Button>
+                    <Button variant="ghost" size="sm" onClick={() => navigate('/wallet')}>View All</Button>
                 </div>
                 
                 <div className="space-y-1">
@@ -238,6 +268,48 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                 </div>
             </div>
         </div>
+
+        {/* Plaid Modal Mock */}
+        {showPlaid && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+                <div className="bg-white w-[400px] h-[500px] rounded-xl overflow-hidden flex flex-col shadow-2xl">
+                    {/* Plaid Header */}
+                    <div className="bg-black p-4 flex justify-between items-center">
+                         <div className="text-white font-bold tracking-wider">PLAID</div>
+                         <div className="w-8 h-8 rounded bg-gray-800" />
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col items-center justify-center p-8 text-black">
+                        {plaidLoading === 1 && (
+                            <>
+                                <Loader2 className="w-12 h-12 animate-spin text-black mb-4" />
+                                <h3 className="font-bold text-lg">Authenticating with Chase...</h3>
+                            </>
+                        )}
+                        {plaidLoading === 2 && (
+                            <>
+                                <Loader2 className="w-12 h-12 animate-spin text-black mb-4" />
+                                <h3 className="font-bold text-lg">Scanning Transactions...</h3>
+                                <p className="text-sm text-gray-500 mt-2">Looking for Uber, Flights, and Utilities...</p>
+                            </>
+                        )}
+                        {plaidLoading === 3 && (
+                            <>
+                                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4 text-white animate-slide-up">
+                                    <Leaf size={32} />
+                                </div>
+                                <h3 className="font-bold text-lg">2 New Transactions Found</h3>
+                                <p className="text-sm text-gray-500 mt-2">Added 12.7 kg CO2e to your dashboard.</p>
+                            </>
+                        )}
+                    </div>
+                    
+                    <div className="p-4 border-t border-gray-100 bg-gray-50 text-center text-xs text-gray-400">
+                        Secure Connection via Plaid Inc.
+                    </div>
+                </div>
+            </div>
+        )}
     </div>
   );
 };

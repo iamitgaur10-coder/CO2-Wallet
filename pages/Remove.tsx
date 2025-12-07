@@ -1,15 +1,17 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, Input, cn } from '../components/UI';
-import { Leaf, ShieldCheck, Globe, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin } from 'lucide-react';
+import { ShieldCheck, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin } from 'lucide-react';
 import { optimizeRemovalMix } from '../services/gemini';
 import { RemovalRecord, RecommendedRemoval } from '../types';
 
 interface RemoveProps {
     balanceKg: number;
     onAddRemoval: (rec: RemovalRecord) => void;
+    isDemo?: boolean;
 }
 
-export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
+export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo = false }) => {
     const debtToNeutralize = balanceKg > 0 ? balanceKg : 100; // Default target
     const [budget, setBudget] = useState<string>('25');
     const [recommendations, setRecommendations] = useState<RecommendedRemoval[]>([]);
@@ -35,21 +37,24 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
         setIsProcessing(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
         
+        // Simulating success even for demo, but without real impact
         const txHash = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
         
-        recommendations.forEach(rec => {
-            onAddRemoval({
-                id: crypto.randomUUID(),
-                project_name: rec.provider,
-                provider: rec.provider as any,
-                method: rec.method as any,
-                amount_kg: rec.amount_kg,
-                cost_usd: rec.cost_usd,
-                date: new Date().toISOString(),
-                tx_hash: txHash,
-                certificate_url: `https://mumbai.polygonscan.com/tx/${txHash}`
+        if (!isDemo) {
+            recommendations.forEach(rec => {
+                onAddRemoval({
+                    id: crypto.randomUUID(),
+                    project_name: rec.provider,
+                    provider: rec.provider as any,
+                    method: rec.method as any,
+                    amount_kg: rec.amount_kg,
+                    cost_usd: rec.cost_usd,
+                    date: new Date().toISOString(),
+                    tx_hash: txHash,
+                    certificate_url: `https://mumbai.polygonscan.com/tx/${txHash}`
+                });
             });
-        });
+        }
 
         setIsProcessing(false);
         setIsSuccess(true);
@@ -70,6 +75,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
                 <p className="text-xl text-gray-300 max-w-lg mb-8">
                     You just permanently removed <span className="text-emerald-400 font-bold">{recommendations.reduce((a,b) => a + b.amount_kg, 0).toFixed(1)} kg</span> of CO₂.
                 </p>
+                {isDemo && <p className="text-blue-400 text-sm mb-4">Demo Mode: No actual funds were charged.</p>}
                 
                 <Card className="max-w-md w-full p-6 bg-surface/80 mb-8 border-emerald-500/20">
                     <div className="flex justify-between items-center mb-4 border-b border-border pb-4">
@@ -105,6 +111,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
                 <p className="text-muted text-lg">
                     Gemini 3 Pro analyzes live carbon markets to build your perfect removal portfolio.
                 </p>
+                {isDemo && <Badge variant="warning" className="mt-2">DEMO MODE: PAYMENTS DISABLED</Badge>}
             </header>
 
             <div className="grid lg:grid-cols-3 gap-8 items-start">
@@ -247,7 +254,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
                                 ) : (
                                     <>
                                         <Lock size={18} className="mr-2 opacity-70" />
-                                        Pay & Retire Credits
+                                        {isDemo ? "Simulate Payment (Demo)" : "Pay & Retire Credits"}
                                     </>
                                 )}
                             </Button>
