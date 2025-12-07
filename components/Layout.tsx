@@ -39,9 +39,11 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   };
 
   const isLoginPage = location.pathname === '/login';
+  // FIX: Treat DEMO users as Authenticated for Layout purposes so they see the Sidebar
+  const showAppLayout = userState === UserState.AUTHENTICATED || userState === UserState.DEMO;
 
   const PublicNav = () => (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 bg-[#0D1117]/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
@@ -156,7 +158,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
       </nav>
   )
 
-  if (userState === UserState.AUTHENTICATED) {
+  if (showAppLayout) {
     return (
       <div className="min-h-screen bg-background text-white">
         <AppSidebar />
@@ -200,24 +202,24 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
             <div>
                 <h4 className="font-bold mb-4 text-white">Product</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li>Features</li>
-                    <li>Pricing</li>
-                    <li>API</li>
+                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Features</button></li>
+                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Pricing</button></li>
+                    <li><button onClick={() => navigate('/science')} className="hover:text-emerald-400">API</button></li>
                 </ul>
             </div>
             <div>
                 <h4 className="font-bold mb-4 text-white">Company</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li>About</li>
-                    <li>Blog</li>
-                    <li>Careers</li>
+                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">About</button></li>
+                    <li><button onClick={() => navigate('/science')} className="hover:text-emerald-400">Methodology</button></li>
+                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Careers</button></li>
                 </ul>
             </div>
              <div>
                 <h4 className="font-bold mb-4 text-white">Legal</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li>Privacy</li>
-                    <li>Terms</li>
+                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Privacy</button></li>
+                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Terms</button></li>
                 </ul>
             </div>
              <div className="col-span-2 md:col-span-1">
