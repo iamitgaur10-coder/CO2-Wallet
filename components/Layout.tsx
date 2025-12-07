@@ -210,16 +210,16 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
             <div>
                 <h4 className="font-bold mb-4 text-white">Company</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">About</button></li>
+                    <li><button onClick={() => navigate('/about')} className="hover:text-emerald-400">About</button></li>
                     <li><button onClick={() => navigate('/science')} className="hover:text-emerald-400">Methodology</button></li>
-                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Careers</button></li>
+                    <li><button onClick={() => navigate('/careers')} className="hover:text-emerald-400">Careers</button></li>
                 </ul>
             </div>
              <div>
                 <h4 className="font-bold mb-4 text-white">Legal</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Privacy</button></li>
-                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Terms</button></li>
+                    <li><button onClick={() => navigate('/privacy')} className="hover:text-emerald-400">Privacy</button></li>
+                    <li><button onClick={() => navigate('/terms')} className="hover:text-emerald-400">Terms</button></li>
                 </ul>
             </div>
              <div className="col-span-2 md:col-span-1">

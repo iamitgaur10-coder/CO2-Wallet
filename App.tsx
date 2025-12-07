@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
@@ -12,6 +11,7 @@ import { Wallet } from './pages/Wallet';
 import { Leaderboard } from './pages/Leaderboard';
 import { Profile } from './pages/Profile';
 import { Science } from './pages/Science';
+import { About, Careers, Privacy, Terms, Blog } from './pages/Static';
 import { UserState, EmissionRecord, RemovalRecord } from './types';
 
 const App: React.FC = () => {
@@ -83,6 +83,11 @@ const App: React.FC = () => {
           
           <Route path="/how-it-works" element={<Science />} />
           <Route path="/science" element={<Science />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/blog" element={<Blog />} />
 
           {/* Login & Onboarding */}
           <Route path="/login" element={

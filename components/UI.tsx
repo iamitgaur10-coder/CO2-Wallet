@@ -38,11 +38,18 @@ export const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
 Button.displayName = 'Button';
 
 // 2. Card (Glassmorphism + Subtle Borders)
-export const Card = ({ className, children, noPadding = false }: { className?: string; children?: React.ReactNode, noPadding?: boolean }) => (
-  <div className={cn('rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-sm', !noPadding && 'p-6', className)}>
-    {children}
-  </div>
+export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { noPadding?: boolean }>(
+  ({ className, children, noPadding = false, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn('rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-sm', !noPadding && 'p-6', className)}
+      {...props}
+    >
+      {children}
+    </div>
+  )
 );
+Card.displayName = 'Card';
 
 // 3. Badge (Status indicators)
 export const Badge = ({ children, variant = 'neutral', className }: { children?: React.ReactNode, variant?: 'success' | 'warning' | 'neutral' | 'danger', className?: string }) => {
