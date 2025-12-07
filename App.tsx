@@ -37,9 +37,6 @@ const App: React.FC = () => {
   useEffect(() => {
       const totalEmitted = emissions.reduce((acc, curr) => acc + curr.amountKg, 0);
       const totalRemoved = removals.reduce((acc, curr) => acc + curr.amount_kg, 0);
-      
-      // We assume a baseline if they just onboarded, but for "Real Meat" let's stick to tracked data
-      // + a small "historical legacy" baseline if they are new.
       const legacyBaseline = 0; 
       
       setBalanceKg((legacyBaseline + totalEmitted) - totalRemoved);
@@ -53,20 +50,22 @@ const App: React.FC = () => {
       setRemovals(prev => [record, ...prev]);
   };
 
+  const isAuthenticatedOrDemo = userState === UserState.AUTHENTICATED || userState === UserState.DEMO;
+
   return (
     <HashRouter>
       <Layout userState={userState} setUserState={setUserState}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={
-              userState === UserState.AUTHENTICATED 
+              isAuthenticatedOrDemo 
               ? <Navigate to="/dashboard" /> 
               : <Home setUserState={setUserState} />
           } />
           
           {/* Login & Onboarding */}
           <Route path="/login" element={
-              userState === UserState.AUTHENTICATED
+              isAuthenticatedOrDemo
               ? <Navigate to="/dashboard" />
               : <Login setUserState={setUserState} />
           } />
@@ -74,17 +73,18 @@ const App: React.FC = () => {
 
           {/* Authenticated Routes */}
           <Route path="/dashboard" element={
-              userState === UserState.AUTHENTICATED 
+              isAuthenticatedOrDemo 
               ? <Dashboard 
                   balanceKg={balanceKg} 
                   emissions={emissions} 
                   removals={removals}
                   onAddEmission={addEmission}
+                  isDemo={userState === UserState.DEMO}
                 /> 
               : <Navigate to="/" />
           } />
           <Route path="/remove" element={
-              userState === UserState.AUTHENTICATED 
+              isAuthenticatedOrDemo 
               ? <Remove 
                   balanceKg={balanceKg}
                   onAddRemoval={addRemoval}
@@ -92,7 +92,7 @@ const App: React.FC = () => {
               : <Navigate to="/" />
           } />
           <Route path="/insights" element={
-              userState === UserState.AUTHENTICATED 
+              isAuthenticatedOrDemo 
               ? <Insights 
                   balanceKg={balanceKg}
                   historyContext={`User has ${emissions.length} emission events totaling ${emissions.reduce((a,b)=>a+b.amountKg,0)}kg. Top source: Flights.`}

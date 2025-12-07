@@ -2,7 +2,8 @@
 export enum UserState {
   PUBLIC = 'PUBLIC',
   ONBOARDING = 'ONBOARDING',
-  AUTHENTICATED = 'AUTHENTICATED'
+  AUTHENTICATED = 'AUTHENTICATED',
+  DEMO = 'DEMO'
 }
 
 // Supabase Database Types

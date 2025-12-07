@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, Progress, cn } from '../components/UI';
-import { Plus, ArrowUpRight, Cloud, Car, Zap, Utensils, ShoppingBag, Leaf, Plane, Info } from 'lucide-react';
+import { Plus, ArrowUpRight, Cloud, Car, Zap, Utensils, ShoppingBag, Leaf, Plane, Info, Eye } from 'lucide-react';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { EmissionRecord, RemovalRecord } from '../types';
 import { ReceiptUploader } from '../components/ReceiptUploader';
@@ -11,6 +11,7 @@ interface DashboardProps {
     emissions: EmissionRecord[];
     removals: RemovalRecord[];
     onAddEmission: (rec: EmissionRecord) => void;
+    isDemo?: boolean;
 }
 
 const balanceHistoryData = [
@@ -23,7 +24,7 @@ const balanceHistoryData = [
   { day: 'Today', net: -110 },
 ];
 
-export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, removals, onAddEmission }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, removals, onAddEmission, isDemo = false }) => {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
 
@@ -50,8 +51,22 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
       ...removals.map(r => ({ ...r, id: r.id, amountKg: r.amount_kg, source: r.project_name, isRemoval: true, type: 'removal', date: r.date }))
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  // Humanize Data Logic
+  const treeEquivalent = Math.abs(balanceKg / 20); // Approx 20kg per tree/year
+  const flightEquivalent = Math.abs(balanceKg / 900); // Approx 900kg for London-NYC
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 animate-fade-in space-y-8">
+    <div className="max-w-6xl mx-auto px-4 py-8 animate-fade-in space-y-8 relative">
+        {isDemo && (
+            <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-3 rounded-lg flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                    <Eye size={18} />
+                    <span className="font-bold text-sm">Observer Mode Active</span>
+                </div>
+                <Button size="sm" variant="primary" className="h-8" onClick={() => navigate('/onboarding')}>Create Real Account</Button>
+            </div>
+        )}
+
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
             <div>
@@ -203,7 +218,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                         <div className="h-px bg-border my-2" />
                         <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-medium">Net Impact</span>
-                            <span className="text-emerald-400 font-mono font-bold">-110 kg</span>
+                            <span className="text-emerald-400 font-mono font-bold">{balanceKg.toFixed(1)} kg</span>
                         </div>
                     </div>
                 </Card>
@@ -214,7 +229,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                         <span className="text-xs font-bold uppercase">Did you know?</span>
                     </div>
                     <p className="text-xs text-muted leading-relaxed">
-                        Your negative balance of 110kg is equivalent to planting 5 trees this year. Keep it up to reach the top 10% of your city.
+                        Your impact is equivalent to:
+                        <br/>
+                        <strong className="text-white">🌲 {treeEquivalent.toFixed(1)} mature trees</strong> planted.
+                        <br/>
+                        <strong className="text-white">✈️ {flightEquivalent.toFixed(1)} transatlantic flights</strong> offset.
                     </p>
                 </div>
             </div>

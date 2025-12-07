@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Badge } from '../components/UI';
 import { UserState } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, Globe, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Globe, ShieldCheck, Zap, Eye } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface HomeProps {
@@ -34,6 +34,11 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
       navigate('/onboarding');
   }
 
+  const handleDemo = () => {
+      setUserState(UserState.DEMO);
+      navigate('/dashboard');
+  }
+
   return (
     <div className="overflow-hidden">
       {/* Hero */}
@@ -43,25 +48,26 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
         <div className="max-w-5xl mx-auto text-center">
             <Badge variant="success" >Version 2.0 Now Live</Badge>
             <h1 className="mt-8 text-5xl sm:text-7xl font-display font-bold tracking-tight leading-[1.1]">
-                Your personal <span className="text-emerald-400">atmospheric repair</span> account.
+                The easiest way to <span className="text-emerald-400">offset</span> your on-chain carbon footprint.
             </h1>
             <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto">
-                Track every gram. Remove every gram. Prove every gram.
+                Powered by Toucan Protocol & Gemini 3 Pro.
                 <br />
-                Join the new balance sheet that actually matters.
+                Track every gram. Remove every gram. Prove every gram.
             </p>
             
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button onClick={handleStart} className="h-12 px-8 text-base w-full sm:w-auto">
                     Get Started Free
                 </Button>
-                <Button variant="secondary" className="h-12 px-8 text-base w-full sm:w-auto gap-2">
-                    <Zap size={18} className="text-yellow-400" />
-                    Watch 60-sec Demo
+                <Button variant="secondary" onClick={handleDemo} className="h-12 px-8 text-base w-full sm:w-auto gap-2">
+                    <Eye size={18} className="text-gray-400" />
+                    View Live Demo
                 </Button>
             </div>
 
-            <div className="mt-12 text-sm text-gray-500 font-mono">
+            <div className="mt-12 text-sm text-gray-500 font-mono flex items-center justify-center gap-2">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                 <span className="text-emerald-500 font-bold">-42,108 kg</span> removed by community this week
             </div>
         </div>

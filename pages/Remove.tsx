@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Badge, Input } from '../components/UI';
-import { Leaf, ShieldCheck, Globe, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink } from 'lucide-react';
+import { Card, Button, Badge, Input, cn } from '../components/UI';
+import { Leaf, ShieldCheck, Globe, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin } from 'lucide-react';
 import { optimizeRemovalMix } from '../services/gemini';
 import { RemovalRecord, RecommendedRemoval } from '../types';
 
@@ -14,8 +14,9 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
     const [budget, setBudget] = useState<string>('25');
     const [recommendations, setRecommendations] = useState<RecommendedRemoval[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [isProcessing, setIsProcessing] = useState(false); // Stripe processing state
+    const [isProcessing, setIsProcessing] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState<'card' | 'crypto'>('card');
 
     const handleOptimize = async () => {
         setIsLoading(true);
@@ -32,11 +33,8 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
 
     const handleCheckout = async () => {
         setIsProcessing(true);
-        
-        // SIMULATE STRIPE & TOUCAN API DELAY
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Execute "Transaction"
         const txHash = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
         
         recommendations.forEach(rec => {
@@ -56,6 +54,11 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
         setIsProcessing(false);
         setIsSuccess(true);
     };
+
+    const handleShare = () => {
+        const text = `I just permanently removed ${recommendations.reduce((a,b)=>a+b.amount_kg,0).toFixed(1)}kg of CO2 on-chain with @co2wallet. #ReFi #Gemini`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+    }
 
     if (isSuccess) {
         return (
@@ -86,8 +89,10 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
                 </Card>
 
                 <div className="flex gap-4">
-                    <Button onClick={() => setIsSuccess(false)} variant="secondary">Remove More</Button>
-                    <Button onClick={() => window.location.hash = '#/dashboard'}>Return to Dashboard</Button>
+                    <Button onClick={handleShare} className="gap-2 bg-[#1DA1F2] hover:bg-[#1a91da] border-none text-white shadow-lg">
+                        <Share2 size={16} /> Share on X
+                    </Button>
+                    <Button onClick={() => setIsSuccess(false)} variant="secondary">Done</Button>
                 </div>
             </div>
         )
@@ -214,6 +219,21 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
                                 )}
                             </Card>
 
+                            <div className="flex gap-4">
+                                <button 
+                                    onClick={() => setPaymentMethod('card')}
+                                    className={cn("flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 transition-all", paymentMethod === 'card' ? 'bg-white text-black border-white' : 'bg-transparent text-gray-400 border-border hover:border-gray-500')}
+                                >
+                                    <CreditCard size={18} /> Card (Stripe)
+                                </button>
+                                <button 
+                                    onClick={() => setPaymentMethod('crypto')}
+                                    className={cn("flex-1 p-3 rounded-lg border flex items-center justify-center gap-2 transition-all", paymentMethod === 'crypto' ? 'bg-white text-black border-white' : 'bg-transparent text-gray-400 border-border hover:border-gray-500')}
+                                >
+                                    <Bitcoin size={18} /> Crypto
+                                </button>
+                            </div>
+
                             <Button 
                                 className="w-full h-14 text-lg font-bold shadow-lg shadow-emerald-900/20" 
                                 onClick={handleCheckout}
@@ -233,7 +253,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval }) => {
                             </Button>
                             
                             <p className="text-center text-xs text-muted">
-                                Secure payment via Stripe. Tokens verified by Toucan Protocol.
+                                {paymentMethod === 'card' ? 'Secure payment via Stripe.' : 'Pay via MetaMask/WalletConnect.'} Tokens verified by Toucan Protocol.
                             </p>
                          </>
                      )}
