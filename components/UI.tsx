@@ -1,11 +1,71 @@
-import React from 'react';
+
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ChevronDown, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+// --- TOAST SYSTEM ---
+type ToastType = 'success' | 'error' | 'info';
+
+interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+}
+
+interface ToastContextType {
+  toast: (message: string, type?: ToastType) => void;
+}
+
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
+  const toast = (message: string, type: ToastType = 'info') => {
+    const id = Math.random().toString(36).substr(2, 9);
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 5000);
+  };
+
+  return (
+    <ToastContext.Provider value={{ toast }}>
+      {children}
+      <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
+        <AnimatePresence>
+          {toasts.map((t) => (
+            <motion.div
+              key={t.id}
+              initial={{ opacity: 0, x: 50, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.9 }}
+              className="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-[#0D1117] border border-white/10 text-white shadow-2xl min-w-[300px]"
+            >
+              {t.type === 'success' && <CheckCircle2 className="text-emerald-500" size={20} />}
+              {t.type === 'error' && <AlertCircle className="text-red-500" size={20} />}
+              <span className="text-sm font-medium">{t.message}</span>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </ToastContext.Provider>
+  );
+};
+
+export const useToast = () => {
+  const context = useContext(ToastContext);
+  if (!context) throw new Error('useToast must be used within a ToastProvider');
+  return context;
+};
+
+// --- COMPONENTS ---
 
 // 1. Button (Linear/Vercel style)
 export const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline', size?: 'sm' | 'md' | 'lg' }>(
@@ -102,5 +162,39 @@ export const Skeleton = ({ className }: { className?: string }) => (
   <div className={cn("animate-pulse rounded-md bg-white/5", className)} />
 );
 
-// 7. Motion Component Wrapper (for animations)
+// 7. Motion Component Wrapper
 export const MotionDiv = motion.div;
+
+// 8. Accordion (FAQ)
+export const Accordion = ({ items }: { items: { title: string; content: string }[] }) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <div className="space-y-4">
+      {items.map((item, index) => (
+        <div key={index} className="border border-white/5 rounded-lg bg-surface/30 overflow-hidden">
+          <button
+            onClick={() => setOpenIndex(openIndex === index ? null : index)}
+            className="w-full flex justify-between items-center p-4 text-left font-medium text-white hover:bg-white/5 transition-colors"
+          >
+            {item.title}
+            <ChevronDown
+              className={cn("transition-transform duration-300 text-gray-400", openIndex === index && "rotate-180")}
+              size={18}
+            />
+          </button>
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-300 ease-in-out",
+              openIndex === index ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+            )}
+          >
+            <div className="p-4 pt-0 text-sm text-gray-400 leading-relaxed">
+              {item.content}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};

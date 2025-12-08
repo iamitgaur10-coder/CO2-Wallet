@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Dashboard } from './pages/Dashboard';
@@ -14,8 +15,13 @@ import { Science } from './pages/Science';
 import { About, Careers, Privacy, Terms, Blog, Product } from './pages/Static';
 import { UserState, EmissionRecord, RemovalRecord } from './types';
 import { WalletModal } from './components/WalletModal';
+import { ToastProvider, useToast } from './components/UI';
 
-const App: React.FC = () => {
+// Wrapper component to use hooks like useNavigate and useToast
+const AppContent: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   // Load initial state from LocalStorage if available
   const [userState, setUserState] = useState<UserState>(() => {
       const saved = localStorage.getItem('co2_user_state');
@@ -70,24 +76,24 @@ const App: React.FC = () => {
       setRemovals(prev => [record, ...prev]);
   };
 
-  // Intercept Onboarding to show Wallet Modal first if needed
   const handleSetUserState = (newState: UserState) => {
-      if (newState === UserState.ONBOARDING && userState === UserState.PUBLIC) {
-          // Open wallet modal instead of direct nav sometimes? 
-          // For now, sticking to standard flow, but exposing modal for future use.
-      }
       setUserState(newState);
   }
 
   const handleWalletConnect = (walletName: string) => {
       console.log(`Connected to ${walletName}`);
-      setUserState(UserState.ONBOARDING);
+      toast(`Wallet connected: ${walletName}`, 'success');
+      setTimeout(() => {
+        setUserState(UserState.ONBOARDING); // Or AUTHENTICATED depending on flow
+        navigate('/dashboard');
+        toast("Welcome to Moss. Calculating footprint...", 'info');
+      }, 500);
   };
 
   const isAuthenticatedOrDemo = userState === UserState.AUTHENTICATED || userState === UserState.DEMO;
 
   return (
-    <HashRouter>
+    <>
       <WalletModal 
         isOpen={isWalletModalOpen} 
         onClose={() => setIsWalletModalOpen(false)} 
@@ -175,8 +181,18 @@ const App: React.FC = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>
-    </HashRouter>
+    </>
   );
 };
+
+const App: React.FC = () => {
+    return (
+        <HashRouter>
+            <ToastProvider>
+                <AppContent />
+            </ToastProvider>
+        </HashRouter>
+    )
+}
 
 export default App;
