@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserState } from '../types';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation, Link } from 'react-router-dom';
 import { Button } from './UI';
 import { 
   LayoutDashboard, 
@@ -202,24 +202,24 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
             <div>
                 <h4 className="font-bold mb-4 text-white">Product</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li><button onClick={() => navigate('/product')} className="hover:text-emerald-400">Features</button></li>
-                    <li><button onClick={() => navigate('/product')} className="hover:text-emerald-400">Pricing</button></li>
-                    <li><button onClick={() => navigate('/science')} className="hover:text-emerald-400">API</button></li>
+                    <li><Link to="/product" className="hover:text-emerald-400">Features</Link></li>
+                    <li><Link to="/product" className="hover:text-emerald-400">Pricing</Link></li>
+                    <li><Link to="/science" className="hover:text-emerald-400">API</Link></li>
                 </ul>
             </div>
             <div>
                 <h4 className="font-bold mb-4 text-white">Company</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li><button onClick={() => navigate('/about')} className="hover:text-emerald-400">About</button></li>
-                    <li><button onClick={() => navigate('/science')} className="hover:text-emerald-400">Methodology</button></li>
-                    <li><button onClick={() => navigate('/careers')} className="hover:text-emerald-400">Careers</button></li>
+                    <li><Link to="/about" className="hover:text-emerald-400">About</Link></li>
+                    <li><Link to="/science" className="hover:text-emerald-400">Methodology</Link></li>
+                    <li><Link to="/careers" className="hover:text-emerald-400">Careers</Link></li>
                 </ul>
             </div>
              <div>
                 <h4 className="font-bold mb-4 text-white">Legal</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li><button onClick={() => navigate('/privacy')} className="hover:text-emerald-400">Privacy</button></li>
-                    <li><button onClick={() => navigate('/terms')} className="hover:text-emerald-400">Terms</button></li>
+                    <li><Link to="/privacy" className="hover:text-emerald-400">Privacy</Link></li>
+                    <li><Link to="/terms" className="hover:text-emerald-400">Terms</Link></li>
                 </ul>
             </div>
              <div className="col-span-2 md:col-span-1">
@@ -227,7 +227,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                  <p className="text-xs text-gray-500">
                      Built for Gemini 3 Pro Hackathon.
                      <br />
-                     &copy; 2025 CO2 Wallet Inc.
+                     &copy; 2025 CO2 Wallet Inc. v2.0.1
                  </p>
              </div>
         </div>

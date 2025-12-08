@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Card, Button, Input, Badge } from '../components/UI';
 import { UserState } from '../types';
-import { LogOut, Save, Download } from 'lucide-react';
+import { LogOut, Save, Download, Trash2 } from 'lucide-react';
 
 interface ProfileProps {
     userState: UserState;
@@ -18,6 +17,13 @@ export const Profile: React.FC<ProfileProps> = ({ userState, setUserState }) => 
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
     };
+
+    const handleReset = () => {
+        if(confirm('Are you sure? This will clear all local data.')) {
+            localStorage.clear();
+            window.location.reload();
+        }
+    }
 
     return (
         <div className="max-w-2xl mx-auto px-4 py-8 animate-fade-in">
@@ -61,8 +67,18 @@ export const Profile: React.FC<ProfileProps> = ({ userState, setUserState }) => 
                     </div>
                 </Card>
 
+                <Card className="border-red-500/20 bg-red-500/5">
+                    <h3 className="text-lg font-bold mb-4 text-red-400">Danger Zone</h3>
+                    <div className="flex items-center justify-between">
+                        <div className="text-sm text-gray-400">Reset all app data and logout.</div>
+                        <Button variant="danger" size="sm" onClick={handleReset}>
+                            <Trash2 size={16} className="mr-2" /> Reset App
+                        </Button>
+                    </div>
+                </Card>
+
                 <div className="pt-6 border-t border-white/10">
-                    <Button variant="danger" className="w-full" onClick={() => setUserState(UserState.PUBLIC)}>
+                    <Button variant="secondary" className="w-full" onClick={() => setUserState(UserState.PUBLIC)}>
                         <LogOut size={16} className="mr-2" /> Sign Out
                     </Button>
                 </div>
