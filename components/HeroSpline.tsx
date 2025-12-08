@@ -8,7 +8,7 @@ export const HeroSpline: React.FC = () => {
   return (
     <div className="w-full h-full relative">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center text-emerald-500">
+        <div className="absolute inset-0 flex items-center justify-center text-emerald-500 z-10 pointer-events-none">
            <Loader2 className="animate-spin w-10 h-10" />
         </div>
       )}
