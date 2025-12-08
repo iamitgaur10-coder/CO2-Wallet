@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Accordion, Badge, Input } from '../components/UI';
 import { UserState } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, Leaf, ShieldCheck, Zap, Globe, Lock } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Leaf, ShieldCheck, Zap, Globe } from 'lucide-react';
 import { HeroSpline } from '../components/HeroSpline';
 import { motion } from 'framer-motion';
 
@@ -25,9 +25,8 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
   }, []);
 
   const handleConnect = () => {
-      // Trigger wallet modal via parent state lifting or route param
+      // Trigger wallet modal via parent state lifting
       setUserState(UserState.ONBOARDING);
-      navigate('/onboarding');
   }
 
   const handleWaitlist = (e: React.FormEvent) => {
@@ -63,12 +62,12 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
                  </div>
 
                  <h1 className="text-5xl md:text-8xl font-display font-bold text-white tracking-tight mb-6 leading-[1.1]">
-                     Offset On-Chain.<br/>
-                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">Flex Forever.</span>
+                     Your Wealth is On-Chain.<br/>
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">Your Impact is Real.</span>
                  </h1>
 
                  <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-                     The first non-custodial wallet to bridge your real-world lifestyle with on-chain carbon credits. Powered by Polygon & Toucan.
+                     The first decentralized luxury wallet for offsetting your real-world lifestyle. Powered by Polygon & Toucan. Verified. Transparent. Immutable.
                  </p>
 
                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -100,9 +99,9 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
 
               <div className="grid md:grid-cols-3 gap-8">
                   {[
-                      { icon: Zap, title: "1. Calculate", desc: "Upload receipts or take our AI quiz. Gemini 3 Pro estimates your footprint instantly." },
-                      { icon: ShieldCheck, title: "2. Verify", desc: "We source real BCT (Base Carbon Tonnes) from Toucan Protocol on Polygon." },
-                      { icon: Leaf, title: "3. Retire", desc: "Burn tokens on-chain to mint a Soulbound NFT certificate of impact." }
+                      { icon: Zap, title: "1. Scan & Track", desc: "Upload receipts or take our AI quiz. Our AI calculates your exact carbon footprint in seconds." },
+                      { icon: ShieldCheck, title: "2. Retire On-Chain", desc: "Purchase and burn real BCT & NCT tokens via Toucan Protocol on Polygon." },
+                      { icon: Leaf, title: "3. Compete & Win", desc: "Climb the global leaderboard. Earn 'Earth Saver' badges and showcase your impact." }
                   ].map((item, i) => (
                       <Card key={i} className="p-8 bg-white/[0.02] border-white/5 hover:border-emerald-500/30 transition-all group">
                           <div className="w-14 h-14 bg-emerald-900/20 rounded-xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform">

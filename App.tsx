@@ -17,6 +17,9 @@ import { UserState, EmissionRecord, RemovalRecord } from './types';
 import { WalletModal } from './components/WalletModal';
 import { ToastProvider, useToast } from './components/UI';
 
+// Initialize App Context
+console.log("Moss App v3.2.0 Initialized - " + new Date().toISOString());
+
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -26,7 +29,6 @@ const AppContent: React.FC = () => {
       return (saved as UserState) || UserState.PUBLIC;
   });
   
-  // ... (Keep existing state/effect logic for persistence from previous step)
   const [emissions, setEmissions] = useState<EmissionRecord[]>(() => {
       const saved = localStorage.getItem('co2_emissions');
       return saved ? JSON.parse(saved) : [];
