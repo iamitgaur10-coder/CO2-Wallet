@@ -197,7 +197,6 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
       </div>
       <footer className="border-t border-white/5 py-16 px-6 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-            {/* Footer columns... similar to previous but refined for dark theme */}
              <div className="col-span-2 md:col-span-1">
                  <div className="flex items-center gap-2 mb-4">
                     <div className="w-6 h-6 bg-emerald-500 rounded flex items-center justify-center">
@@ -205,7 +204,31 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                     </div>
                     <span className="font-display font-bold text-white">Moss</span>
                  </div>
-                 <p className="text-xs text-gray-600 leading-relaxed">Offset on-chain. Flex forever.</p>
+                 <p className="text-xs text-gray-600 leading-relaxed mb-4">Offset on-chain. Flex forever.</p>
+                 <div className="text-[10px] text-gray-700 font-mono">v4.0.0</div>
+             </div>
+             <div>
+                <h4 className="font-bold mb-4 text-white">Product</h4>
+                <div className="flex flex-col gap-2">
+                    <Link to="/product" className="text-sm text-gray-400 hover:text-emerald-400">Features</Link>
+                    <Link to="/product#pricing" className="text-sm text-gray-400 hover:text-emerald-400">Pricing</Link>
+                    <Link to="/calculator" className="text-sm text-gray-400 hover:text-emerald-400">Calculator</Link>
+                </div>
+             </div>
+             <div>
+                <h4 className="font-bold mb-4 text-white">Company</h4>
+                <div className="flex flex-col gap-2">
+                    <Link to="/about" className="text-sm text-gray-400 hover:text-emerald-400">About</Link>
+                    <Link to="/careers" className="text-sm text-gray-400 hover:text-emerald-400">Careers</Link>
+                    <Link to="/blog" className="text-sm text-gray-400 hover:text-emerald-400">Blog</Link>
+                </div>
+             </div>
+             <div>
+                <h4 className="font-bold mb-4 text-white">Legal</h4>
+                <div className="flex flex-col gap-2">
+                    <Link to="/privacy" className="text-sm text-gray-400 hover:text-emerald-400">Privacy</Link>
+                    <Link to="/terms" className="text-sm text-gray-400 hover:text-emerald-400">Terms</Link>
+                </div>
              </div>
         </div>
       </footer>
