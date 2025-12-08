@@ -56,7 +56,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
           {!isLoginPage && (
               <>
                 <div className="hidden md:flex items-center gap-8">
-                    <NavLink to="/" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>Product</NavLink>
+                    <NavLink to="/product" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>Product</NavLink>
                     <NavLink to="/how-it-works" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>How It Works</NavLink>
                     <NavLink to="/science" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>Science</NavLink>
                     
@@ -83,7 +83,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
       {/* Mobile Menu */}
       {mobileMenuOpen && !isLoginPage && (
         <div className="md:hidden bg-background border-b border-white/10 py-4 px-4 flex flex-col gap-4 animate-fade-in">
-           <NavLink to="/" className="text-base font-medium text-gray-300">Product</NavLink>
+           <NavLink to="/product" className="text-base font-medium text-gray-300">Product</NavLink>
            <NavLink to="/how-it-works" className="text-base font-medium text-gray-300">How It Works</NavLink>
            <NavLink to="/science" className="text-base font-medium text-gray-300">Science</NavLink>
            <button onClick={() => navigate('/login')} className="text-base font-medium text-gray-300 text-left">Login</button>
@@ -202,8 +202,8 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
             <div>
                 <h4 className="font-bold mb-4 text-white">Product</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Features</button></li>
-                    <li><button onClick={() => navigate('/')} className="hover:text-emerald-400">Pricing</button></li>
+                    <li><button onClick={() => navigate('/product')} className="hover:text-emerald-400">Features</button></li>
+                    <li><button onClick={() => navigate('/product')} className="hover:text-emerald-400">Pricing</button></li>
                     <li><button onClick={() => navigate('/science')} className="hover:text-emerald-400">API</button></li>
                 </ul>
             </div>

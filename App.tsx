@@ -11,7 +11,7 @@ import { Wallet } from './pages/Wallet';
 import { Leaderboard } from './pages/Leaderboard';
 import { Profile } from './pages/Profile';
 import { Science } from './pages/Science';
-import { About, Careers, Privacy, Terms, Blog } from './pages/Static';
+import { About, Careers, Privacy, Terms, Blog, Product } from './pages/Static';
 import { UserState, EmissionRecord, RemovalRecord } from './types';
 
 const App: React.FC = () => {
@@ -81,6 +81,7 @@ const App: React.FC = () => {
               : <Home setUserState={setUserState} />
           } />
           
+          <Route path="/product" element={<Product />} />
           <Route path="/how-it-works" element={<Science />} />
           <Route path="/science" element={<Science />} />
           <Route path="/about" element={<About />} />
