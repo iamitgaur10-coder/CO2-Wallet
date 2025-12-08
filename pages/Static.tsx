@@ -80,8 +80,8 @@ export const About = () => (
             </Card>
             <Card>
                 <Shield className="w-8 h-8 text-emerald-500 mb-4" />
-                <h3 className="text-xl font-bold mb-2 text-white">Our Trust</h3>
-                <p className="text-gray-400">We rely on code, not promises. Every ton removed is verified on-chain via Toucan Protocol.</p>
+                <h3 className="text-xl font-bold mb-2 text-white">Non-Custodial</h3>
+                <p className="text-gray-400">We never touch your funds. You interact directly with the Polygon blockchain via your own wallet.</p>
             </Card>
         </div>
     </div>
