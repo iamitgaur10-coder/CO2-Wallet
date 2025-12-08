@@ -1,6 +1,6 @@
 {
-  "name": "CO₂ Removal Wallet",
-  "description": "Production V2.0. The world's first Gemini-powered atmospheric repair wallet. Track, remove, and prove your carbon footprint.",
+  "name": "Moss",
+  "description": "Offset on-chain, flex forever. The first luxury carbon wallet powered by Polygon & Toucan.",
   "requestFramePermissions": [
     "camera",
     "geolocation"

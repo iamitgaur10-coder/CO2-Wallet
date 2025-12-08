@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button, Input } from '../components/UI';
 import { UserState } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Hexagon } from 'lucide-react';
 
 interface LoginProps {
     setUserState: (s: UserState) => void;
@@ -24,10 +24,10 @@ export const Login: React.FC<LoginProps> = ({ setUserState }) => {
 
             <div className="mb-8 cursor-pointer" onClick={() => navigate('/')}>
                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-                        <span className="text-black font-bold text-lg">C</span>
+                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded-lg flex items-center justify-center">
+                        <Hexagon className="text-white fill-white/20" size={20} />
                     </div>
-                    <span className="font-display font-bold text-xl tracking-tight text-white">CO₂ Wallet</span>
+                    <span className="font-display font-bold text-xl tracking-tight text-white">Moss</span>
                   </div>
             </div>
 

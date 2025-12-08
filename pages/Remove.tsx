@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, Input, cn, MotionDiv } from '../components/UI';
 import { ShieldCheck, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin, Leaf, RefreshCw } from 'lucide-react';
@@ -84,7 +83,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
     };
 
     const handleShare = () => {
-        const text = `I just permanently removed ${recommendations.reduce((a,b)=>a+b.amount_kg,0).toFixed(1)}kg of CO2 on-chain with @co2wallet. #ReFi #Gemini`;
+        const text = `I just permanently removed ${recommendations.reduce((a,b)=>a+b.amount_kg,0).toFixed(1)}kg of CO2 on-chain with @MossApp. #ReFi #Polygon`;
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
     }
 
@@ -123,7 +122,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
                         <div className="space-y-4 text-left border-t border-b border-white/10 py-6 mb-6 relative z-10">
                              <div className="flex justify-between items-center">
                                 <span className="text-sm text-gray-400">Beneficiary</span>
-                                <span className="font-mono text-white">Carbon Wallet User</span>
+                                <span className="font-mono text-white">Moss User</span>
                              </div>
                              <div className="flex justify-between items-center">
                                 <span className="text-sm text-gray-400">Total Retired</span>

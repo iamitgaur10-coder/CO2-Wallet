@@ -24,8 +24,6 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
   }, []);
 
   const handleStart = () => {
-      // Logic handled by Layout Connect Button now, but keeping for CTA
-      // Triggers wallet modal in App context ideally, but here just directs to Onboarding
       setUserState(UserState.ONBOARDING);
       navigate('/onboarding');
   }
@@ -37,11 +35,11 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
 
   return (
     <div className="overflow-hidden bg-[#0D1117] relative">
-      {/* 1. THE VOID FIX: Multi-layered Gradient Mesh with Noise */}
+      {/* 1. THE VOID FIX: Deep Moss Green Gradient Mesh */}
       <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] bg-emerald-500/15 blur-[120px] rounded-full mix-blend-screen animate-pulse-slow" />
-          <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] bg-blue-500/10 blur-[100px] rounded-full mix-blend-screen" />
-          <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[600px] bg-emerald-900/10 blur-[150px] rounded-full" />
+          <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] bg-emerald-800/20 blur-[120px] rounded-full mix-blend-screen animate-pulse-slow" />
+          <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] bg-teal-900/10 blur-[100px] rounded-full mix-blend-screen" />
+          <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[600px] bg-emerald-950/20 blur-[150px] rounded-full" />
           {/* Noise texture for "expensive" feel */}
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
       </div>
@@ -70,20 +68,20 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
             </div>
 
             <h1 className="text-6xl sm:text-8xl font-display font-bold tracking-tight leading-[1.05] text-white mb-8 drop-shadow-2xl">
-                Your Wealth is On-Chain.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Your Impact is Real.</span>
+                Offset on-chain.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Flex forever.</span>
             </h1>
             
             <p className="mt-10 text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-                The first decentralized wallet that lets you offset your <strong>real-world</strong> lifestyle using Polygon & Toucan Protocol. Verified. Transparent. Immutable.
+                <strong>Moss</strong> is the first decentralized luxury wallet that lets you offset your real-world lifestyle using Polygon & Toucan Protocol.
             </p>
             
             <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
                 <Button variant="primary" onClick={handleStart} className="h-14 px-10 text-lg w-full sm:w-auto font-bold shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:shadow-[0_0_50px_rgba(16,185,129,0.4)] transition-all duration-500 transform hover:-translate-y-1">
-                    Start Offsetting
+                    Connect Wallet
                 </Button>
                 <Button variant="outline" onClick={handleProof} className="h-14 px-10 text-lg w-full sm:w-auto backdrop-blur-md bg-white/[0.02] border-white/10 hover:bg-white/[0.08] transition-all">
-                    View Proof of Impact
+                    View Demo
                 </Button>
             </div>
         </MotionDiv>
@@ -117,7 +115,7 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
                       </div>
                       <h3 className="text-xl font-bold text-white mb-3 relative z-10">Scan & Track</h3>
                       <p className="text-gray-400 leading-relaxed text-sm relative z-10">
-                          Upload receipts or connect your bank. Our Advanced AI calculates your exact carbon footprint in seconds.
+                          Upload receipts or connect your bank. AI calculates your exact carbon footprint in seconds.
                       </p>
                   </Card>
               </MotionDiv>
@@ -135,7 +133,7 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
                       </div>
                       <h3 className="text-xl font-bold text-white mb-3 relative z-10">Retire On-Chain</h3>
                       <p className="text-gray-400 leading-relaxed text-sm relative z-10">
-                          Purchase and burn real BCT & NCT tokens. Receive a permanent NFT certificate of your contribution.
+                          Purchase and burn real BCT & NCT tokens. Receive a permanent Soulbound NFT certificate.
                       </p>
                   </Card>
               </MotionDiv>
@@ -153,7 +151,7 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
                       </div>
                       <h3 className="text-xl font-bold text-white mb-3 relative z-10">Compete & Win</h3>
                       <p className="text-gray-400 leading-relaxed text-sm relative z-10">
-                          Climb the global leaderboard. Earn 'Earth Saver' badges and showcase your verified impact to the world.
+                          Climb the global leaderboard. Earn 'Earth Saver' badges and showcase your verified impact.
                       </p>
                   </Card>
               </MotionDiv>
@@ -170,10 +168,10 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
           >
               <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full -z-0 group-hover:bg-emerald-500/20 transition-all duration-1000" />
               
-              <h2 className="text-4xl font-display font-bold text-white mb-6 relative z-10 tracking-tight">Ready to neutralize your lifestyle?</h2>
+              <h2 className="text-4xl font-display font-bold text-white mb-6 relative z-10 tracking-tight">Ready to join Moss?</h2>
               <p className="text-gray-400 mb-10 text-lg relative z-10">Join 14,000+ others taking real climate action on-chain.</p>
               <Button onClick={handleStart} size="lg" className="h-14 px-10 text-lg relative z-10 font-bold shadow-xl shadow-emerald-500/10 hover:shadow-emerald-500/30 transition-all">
-                  Connect Wallet
+                  Launch App
               </Button>
           </MotionDiv>
       </section>

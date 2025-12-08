@@ -11,7 +11,7 @@ const PageHeader = ({ title, subtitle }: { title: string, subtitle: string }) =>
 
 export const Product = () => (
     <div className="max-w-6xl mx-auto px-4 py-16 animate-fade-in">
-        <PageHeader title="Features & Pricing" subtitle="Everything you need to reach net zero." />
+        <PageHeader title="Features & Pricing" subtitle="Everything you need to reach net zero with Moss." />
         
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
@@ -55,7 +55,7 @@ export const Product = () => (
                 
                 <Card className="p-8 border-emerald-500/50 bg-emerald-900/5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 bg-emerald-500 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
-                    <h3 className="text-xl font-bold mb-2 text-white">Pro</h3>
+                    <h3 className="text-xl font-bold mb-2 text-white">Moss Pro</h3>
                     <div className="text-4xl font-display font-bold mb-6 text-white">$9<span className="text-lg text-gray-400 font-sans font-normal">/mo</span></div>
                     <ul className="space-y-4 mb-8 text-gray-300 text-sm">
                         <li className="flex gap-2 text-white"><Shield size={16} className="text-emerald-400" /> Auto-neutralize every purchase</li>
@@ -71,7 +71,7 @@ export const Product = () => (
 
 export const About = () => (
     <div className="max-w-4xl mx-auto px-4 py-16 animate-fade-in">
-        <PageHeader title="About CO₂ Wallet" subtitle="Building the financial stack for the post-carbon economy." />
+        <PageHeader title="About Moss" subtitle="Building the financial stack for the post-carbon economy." />
         <div className="grid md:grid-cols-2 gap-8 mb-12">
             <Card>
                 <Users className="w-8 h-8 text-emerald-500 mb-4" />
@@ -114,7 +114,7 @@ export const Terms = () => (
     <div className="max-w-3xl mx-auto px-4 py-16 animate-fade-in">
         <h1 className="text-3xl font-bold mb-8 text-white">Terms of Service</h1>
         <Card className="p-8">
-            <p className="text-gray-400">By using CO₂ Wallet, you agree that carbon estimates are approximations based on IPCC data.</p>
+            <p className="text-gray-400">By using Moss, you agree that carbon estimates are approximations based on IPCC data.</p>
         </Card>
     </div>
 );

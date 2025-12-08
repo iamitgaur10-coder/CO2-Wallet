@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, Button, Input, Badge } from '../components/UI';
 import { UserState } from '../types';
@@ -28,7 +27,7 @@ export const Profile: React.FC<ProfileProps> = ({ userState, setUserState }) => 
     }
     
     const handleShare = () => {
-        navigator.clipboard.writeText(`https://co2wallet.com/u/${name.replace(/\s+/g, '').toLowerCase()}`);
+        navigator.clipboard.writeText(`https://moss.app/u/${name.replace(/\s+/g, '').toLowerCase()}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     }

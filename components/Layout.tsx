@@ -5,14 +5,15 @@ import { Button } from './UI';
 import { 
   LayoutDashboard, 
   Wallet, 
-  Leaf, 
+  Hexagon, // New Logo Icon
   BrainCircuit, 
   Trophy, 
   Settings, 
   LogOut, 
   Menu,
   X,
-  Wallet as WalletIcon
+  Wallet as WalletIcon,
+  Leaf
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -26,7 +27,6 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  // Scroll to top on route change
   React.useEffect(() => {
     window.scrollTo(0, 0);
     setMobileMenuOpen(false);
@@ -43,13 +43,13 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   const PublicNav = () => (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/[0.08] bg-[#0D1117]/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 3. NAVBAR FIX: Precise Vertical Alignment (h-20 + flex items-center) */}
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-            <div className="w-9 h-9 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/50 group-hover:shadow-emerald-500/20 transition-all duration-500">
-              <Leaf className="text-black fill-black" size={20} />
+            {/* MOSS LOGO: Hexagon M */}
+            <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/50 group-hover:shadow-emerald-500/20 transition-all duration-500">
+              <Hexagon className="text-white fill-white/20" size={20} strokeWidth={2.5} />
             </div>
-            <span className="font-display font-bold text-2xl tracking-tight text-white group-hover:text-emerald-50 transition-colors">CO₂ Wallet</span>
+            <span className="font-display font-bold text-2xl tracking-tight text-white group-hover:text-emerald-50 transition-colors">Moss</span>
           </div>
           
           {!isLoginPage && (
@@ -115,7 +115,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
     const links = [
         { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
         { to: '/wallet', icon: Wallet, label: 'Wallet' },
-        { to: '/remove', icon: Leaf, label: 'Remove' },
+        { to: '/remove', icon: Hexagon, label: 'Remove' },
         { to: '/insights', icon: BrainCircuit, label: 'Insights AI' },
         { to: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
         { to: '/profile', icon: Settings, label: 'Settings' },
@@ -124,10 +124,10 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
     return (
         <aside className="fixed left-0 top-0 h-screen w-64 bg-surface/50 backdrop-blur-xl border-r border-white/5 hidden lg:flex flex-col z-40">
             <div className="h-20 flex items-center px-6 border-b border-white/5 cursor-pointer" onClick={() => navigate('/dashboard')}>
-                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
-                    <Leaf className="text-black fill-black" size={18} />
+                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded-lg flex items-center justify-center mr-3">
+                    <Hexagon className="text-white fill-white/20" size={18} />
                  </div>
-                 <span className="font-display font-bold text-xl text-white">CO₂ Wallet</span>
+                 <span className="font-display font-bold text-xl text-white">Moss</span>
             </div>
             
             <div className="flex-1 py-6 px-3 flex flex-col gap-1">
@@ -163,7 +163,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
               <NavLink to="/remove" className={({isActive}) => `flex flex-col items-center gap-1 ${isActive ? 'text-emerald-400' : 'text-gray-500'}`}>
                   <div className="bg-primary/20 p-2 rounded-full -mt-6 border-4 border-background relative">
                     <div className="absolute inset-0 bg-emerald-500/20 blur-md rounded-full"></div>
-                    <Leaf size={24} className="text-emerald-500 relative z-10" />
+                    <Hexagon size={24} className="text-emerald-500 relative z-10" />
                   </div>
               </NavLink>
               <NavLink to="/insights" className={({isActive}) => `flex flex-col items-center gap-1 ${isActive ? 'text-emerald-400' : 'text-gray-500'}`}>
@@ -195,8 +195,8 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                {!isLoginPage && (
                    <div className="p-6">
                      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-                            <Leaf className="text-black fill-black" size={20} />
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded-lg flex items-center justify-center">
+                            <Hexagon className="text-white fill-white/20" size={20} />
                         </div>
                      </div>
                    </div>
@@ -243,16 +243,16 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
             </div>
              <div className="col-span-2 md:col-span-1">
                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-6 h-6 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded flex items-center justify-center">
-                        <Leaf className="text-black fill-black" size={14} />
+                    <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded flex items-center justify-center">
+                        <Hexagon className="text-white fill-white/20" size={14} />
                     </div>
-                    <span className="font-display font-bold text-white">CO₂ Wallet</span>
+                    <span className="font-display font-bold text-white">Moss</span>
                  </div>
                  <p className="text-xs text-gray-600 leading-relaxed mb-4">
-                     The first decentralized wallet for your real-world carbon footprint. Built on Polygon.
+                     Offset on-chain, flex forever. Built on Polygon.
                  </p>
                  <p className="text-xs text-gray-700">
-                     &copy; 2025 CO2 Wallet Inc. (v2.1.2)
+                     &copy; 2025 Moss Inc. (v2.2.0)
                  </p>
              </div>
         </div>
