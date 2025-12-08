@@ -33,33 +33,38 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
   }
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden bg-[#0D1117]">
       {/* Hero */}
-      <section className="relative pt-24 pb-32 lg:pt-40 lg:pb-48 px-4 sm:px-6">
-        {/* Abstract Background */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-emerald-500/10 blur-[100px] rounded-full -z-10" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[80px] rounded-full -z-10" />
+      <section className="relative pt-32 pb-40 lg:pt-48 lg:pb-56 px-4 sm:px-6">
         
-        <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium mb-8 animate-fade-in">
+        {/* The "Void" Fix: Subtle Gradient Mesh */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-emerald-500/10 blur-[120px] rounded-full -z-10 pointer-events-none mix-blend-screen" />
+        <div className="absolute top-0 right-0 w-[600px] h-[500px] bg-blue-500/5 blur-[100px] rounded-full -z-10 pointer-events-none" />
+        
+        {/* Optional Noise Texture Overlay */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 -z-10 mix-blend-overlay"></div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-900/10 text-emerald-400 text-xs font-mono font-medium mb-10 animate-fade-in backdrop-blur-sm">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 LIVE: {counter.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Tonnes Retired
             </div>
 
-            <h1 className="text-5xl sm:text-7xl font-display font-bold tracking-tight leading-[1.1] text-white mb-6">
+            <h1 className="text-6xl sm:text-8xl font-display font-bold tracking-tight leading-[1.05] text-white mb-8 drop-shadow-2xl">
                 Your Wealth is On-Chain.<br />
-                <span className="text-emerald-400">Your Impact is Real.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Your Impact is Real.</span>
             </h1>
             
-            <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                The first decentralized wallet that lets you offset your real-world carbon footprint using Polygon & Toucan Protocol. Verified. Transparent. Immutable.
+            {/* Typography Fix: Increased spacing and line-height */}
+            <p className="mt-8 text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto leading-[1.7] font-light">
+                The first decentralized wallet that lets you offset your <strong>real-world</strong> carbon footprint using Polygon & Toucan Protocol. Verified. Transparent. Immutable.
             </p>
             
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button variant="primary" onClick={handleStart} className="h-14 px-8 text-lg w-full sm:w-auto font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5">
+                <Button variant="primary" onClick={handleStart} className="h-14 px-8 text-lg w-full sm:w-auto font-bold shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:shadow-[0_0_40px_rgba(16,185,129,0.4)] transition-all duration-300 transform hover:-translate-y-0.5">
                     Start Offsetting
                 </Button>
-                <Button variant="outline" onClick={handleProof} className="h-14 px-8 text-lg w-full sm:w-auto">
+                <Button variant="outline" onClick={handleProof} className="h-14 px-8 text-lg w-full sm:w-auto backdrop-blur-sm hover:bg-white/5">
                     View Proof of Impact
                 </Button>
             </div>
@@ -67,46 +72,46 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
       </section>
 
       {/* Trust Banner */}
-      <section className="py-12 bg-white/5 border-y border-white/5">
+      <section className="py-12 bg-white/[0.02] border-y border-white/5 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6">
-              <p className="text-center text-xs font-mono text-gray-500 uppercase tracking-[0.2em] mb-8">Trusted Infrastructure</p>
-              <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+              <p className="text-center text-[10px] font-mono text-gray-600 uppercase tracking-[0.3em] mb-8">Trusted Infrastructure</p>
+              <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
                   {['POLYGON', 'TOUCAN', 'VERRA', 'CHAINLINK'].map(brand => (
-                      <span key={brand} className="text-xl md:text-2xl font-display font-bold text-white tracking-tight cursor-default">{brand}</span>
+                      <span key={brand} className="text-xl md:text-2xl font-display font-bold text-white tracking-tight cursor-default select-none">{brand}</span>
                   ))}
               </div>
           </div>
       </section>
 
       {/* Value Props */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
+      <section className="py-32 px-6 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
-              <Card className="p-8 border-white/10 hover:border-emerald-500/30 transition-all group">
-                  <div className="w-14 h-14 bg-surface rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Receipt className="text-emerald-500 w-8 h-8" />
+              <Card className="p-8 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/20 transition-all duration-300 group">
+                  <div className="w-14 h-14 bg-gradient-to-br from-white/5 to-white/0 rounded-2xl border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <Receipt className="text-emerald-500 w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">Scan & Track</h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-400 leading-relaxed text-sm">
                       Upload receipts or connect your bank. Our Advanced AI calculates your exact carbon footprint in seconds.
                   </p>
               </Card>
 
-              <Card className="p-8 border-white/10 hover:border-emerald-500/30 transition-all group">
-                  <div className="w-14 h-14 bg-surface rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <LinkIcon className="text-emerald-500 w-8 h-8" />
+              <Card className="p-8 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/20 transition-all duration-300 group">
+                  <div className="w-14 h-14 bg-gradient-to-br from-white/5 to-white/0 rounded-2xl border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <LinkIcon className="text-emerald-500 w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">Retire On-Chain</h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-400 leading-relaxed text-sm">
                       Purchase and burn real BCT & NCT tokens. Receive a permanent NFT certificate of your contribution.
                   </p>
               </Card>
 
-              <Card className="p-8 border-white/10 hover:border-emerald-500/30 transition-all group">
-                  <div className="w-14 h-14 bg-surface rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Trophy className="text-emerald-500 w-8 h-8" />
+              <Card className="p-8 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/20 transition-all duration-300 group">
+                  <div className="w-14 h-14 bg-gradient-to-br from-white/5 to-white/0 rounded-2xl border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <Trophy className="text-emerald-500 w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">Compete & Win</h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-400 leading-relaxed text-sm">
                       Climb the global leaderboard. Earn 'Earth Saver' badges and showcase your verified impact to the world.
                   </p>
               </Card>
@@ -115,12 +120,12 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
 
       {/* Final CTA */}
       <section className="py-24 px-6 text-center">
-          <div className="max-w-3xl mx-auto p-12 rounded-2xl bg-gradient-to-br from-surface to-surface-hover border border-white/10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full -z-0" />
+          <div className="max-w-4xl mx-auto p-16 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full -z-0" />
               
-              <h2 className="text-3xl font-display font-bold text-white mb-6 relative z-10">Ready to neutralize your lifestyle?</h2>
-              <p className="text-gray-400 mb-8 relative z-10">Join 14,000+ others taking real climate action on-chain.</p>
-              <Button onClick={handleStart} size="lg" className="h-14 px-10 text-lg relative z-10">
+              <h2 className="text-4xl font-display font-bold text-white mb-6 relative z-10 tracking-tight">Ready to neutralize your lifestyle?</h2>
+              <p className="text-gray-400 mb-10 text-lg relative z-10">Join 14,000+ others taking real climate action on-chain.</p>
+              <Button onClick={handleStart} size="lg" className="h-14 px-10 text-lg relative z-10 font-bold shadow-xl shadow-emerald-500/10">
                   Connect Wallet
               </Button>
           </div>
