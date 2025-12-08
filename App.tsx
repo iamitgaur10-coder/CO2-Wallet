@@ -18,7 +18,7 @@ import { WalletModal } from './components/WalletModal';
 import { ToastProvider, useToast } from './components/UI';
 
 // Initialize App Context
-console.log("Moss App v3.2.0 Initialized - " + new Date().toISOString());
+console.log("Moss App v3.3.0 Initialized - " + new Date().toISOString());
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
