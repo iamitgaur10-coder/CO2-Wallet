@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Badge } from '../components/UI';
 import { UserState } from '../types';
@@ -47,19 +46,19 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full -z-10" />
         
         <div className="max-w-5xl mx-auto text-center">
-            <Badge variant="success" >Version 2.0 Now Live</Badge>
+            <Badge variant="success" >Version 2.1 Live</Badge>
             <h1 className="mt-8 text-5xl sm:text-7xl font-display font-bold tracking-tight leading-[1.1]">
-                The easiest way to <span className="text-emerald-400">offset</span> your on-chain carbon footprint.
+                The first Web3 wallet for your <span className="text-emerald-400">Real-World</span> footprint.
             </h1>
             <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto">
-                Powered by Toucan Protocol & Gemini 3 Pro.
+                Powered by Advanced AI & Toucan Protocol.
                 <br />
                 Track every gram. Remove every gram. Prove every gram.
             </p>
             
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button onClick={handleStart} className="h-12 px-8 text-base w-full sm:w-auto">
-                    Get Started Free
+                    Start Offsetting
                 </Button>
                 <Button variant="secondary" onClick={handleDemo} className="h-12 px-8 text-base w-full sm:w-auto gap-2">
                     <Eye size={18} className="text-gray-400" />
@@ -85,20 +84,20 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
         </div>
       </section>
 
-      {/* Section 1: The New Balance */}
+      {/* Section 1: The Real World Bridge */}
       <section className="py-24 bg-surface/30 border-y border-white/5">
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
              <div>
-                 <h2 className="text-3xl font-display font-bold mb-6">The New Balance That Actually Matters</h2>
+                 <h2 className="text-3xl font-display font-bold mb-6">Bridge your Crypto Wealth to Real Impact</h2>
                  <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                     You already check your bank balance daily. Now check the one that decides if the future is habitable.
-                     We integrate with your life to calculate your real-time CO₂ debt, then give you one-click power to neutralize it.
+                     You have assets on-chain, but your emissions are off-chain. 
+                     We connect your bank, receipts, and lifestyle to your wallet, allowing you to neutralize your real-world existence with one click.
                  </p>
                  <ul className="space-y-4">
                      {[
-                         'Real-time lifetime CO₂ debt tracking',
-                         'Instant removal with on-chain proof',
-                         'Leaderboards that make climate action status'
+                         'Auto-scan grocery receipts for carbon impact',
+                         'Connect Plaid to track flight & uber emissions',
+                         'Instant verified removal via Polygon'
                      ].map((item, i) => (
                          <li key={i} className="flex items-center gap-3">
                              <CheckCircle2 className="text-emerald-500" size={20} />
@@ -140,7 +139,7 @@ export const Home: React.FC<HomeProps> = ({ setUserState }) => {
       <section className="py-20 text-center">
           <p className="text-sm text-gray-500 uppercase tracking-widest mb-10">Backed by the best removal science</p>
           <div className="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-              {['Climeworks', 'Pachama', 'Running Tide', 'Living Carbon'].map(brand => (
+              {['Climeworks', 'Pachama', 'Running Tide', 'Toucan Protocol'].map(brand => (
                   <span key={brand} className="text-xl font-display font-bold text-white">{brand}</span>
               ))}
           </div>
