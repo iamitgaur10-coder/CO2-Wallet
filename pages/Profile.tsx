@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Card, Button, Input, Badge } from '../components/UI';
 import { UserState } from '../types';
-import { LogOut, Save, Download, Trash2 } from 'lucide-react';
+import { LogOut, Save, Download, Trash2, Share2, Copy } from 'lucide-react';
 
 interface ProfileProps {
     userState: UserState;
@@ -12,6 +13,7 @@ export const Profile: React.FC<ProfileProps> = ({ userState, setUserState }) => 
     const [name, setName] = useState('Carbon Pioneer');
     const [email, setEmail] = useState('user@example.com');
     const [saved, setSaved] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     const handleSave = () => {
         setSaved(true);
@@ -23,6 +25,12 @@ export const Profile: React.FC<ProfileProps> = ({ userState, setUserState }) => 
             localStorage.clear();
             window.location.reload();
         }
+    }
+    
+    const handleShare = () => {
+        navigator.clipboard.writeText(`https://co2wallet.com/u/${name.replace(/\s+/g, '').toLowerCase()}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     }
 
     return (
@@ -43,6 +51,19 @@ export const Profile: React.FC<ProfileProps> = ({ userState, setUserState }) => 
                         </div>
                         <Button onClick={handleSave} disabled={saved} className="mt-2">
                             {saved ? <span className="text-emerald-400">Saved Successfully</span> : <><Save size={16} className="mr-2"/> Save Changes</>}
+                        </Button>
+                    </div>
+                </Card>
+                
+                {/* Share Public Profile */}
+                <Card className="border-emerald-500/20 bg-emerald-900/5">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="font-bold text-white mb-1">Public Profile</h3>
+                            <div className="text-sm text-muted">Showcase your impact gallery and rank.</div>
+                        </div>
+                        <Button variant="secondary" size="sm" onClick={handleShare}>
+                            {copied ? <span className="text-emerald-400">Copied!</span> : <><Share2 size={16} className="mr-2"/> Share Link</>}
                         </Button>
                     </div>
                 </Card>

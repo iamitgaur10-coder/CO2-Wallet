@@ -13,6 +13,7 @@ import { Profile } from './pages/Profile';
 import { Science } from './pages/Science';
 import { About, Careers, Privacy, Terms, Blog, Product } from './pages/Static';
 import { UserState, EmissionRecord, RemovalRecord } from './types';
+import { WalletModal } from './components/WalletModal';
 
 const App: React.FC = () => {
   // Load initial state from LocalStorage if available
@@ -38,6 +39,7 @@ const App: React.FC = () => {
   });
 
   const [balanceKg, setBalanceKg] = useState(0);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
   // Persistence Effects
   useEffect(() => {
@@ -68,17 +70,43 @@ const App: React.FC = () => {
       setRemovals(prev => [record, ...prev]);
   };
 
+  // Intercept Onboarding to show Wallet Modal first if needed
+  const handleSetUserState = (newState: UserState) => {
+      if (newState === UserState.ONBOARDING && userState === UserState.PUBLIC) {
+          // Open wallet modal instead of direct nav sometimes? 
+          // For now, sticking to standard flow, but exposing modal for future use.
+      }
+      setUserState(newState);
+  }
+
+  const handleWalletConnect = (walletName: string) => {
+      console.log(`Connected to ${walletName}`);
+      setUserState(UserState.ONBOARDING);
+  };
+
   const isAuthenticatedOrDemo = userState === UserState.AUTHENTICATED || userState === UserState.DEMO;
 
   return (
     <HashRouter>
-      <Layout userState={userState} setUserState={setUserState}>
+      <WalletModal 
+        isOpen={isWalletModalOpen} 
+        onClose={() => setIsWalletModalOpen(false)} 
+        onConnect={handleWalletConnect}
+      />
+      
+      <Layout userState={userState} setUserState={handleSetUserState}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={
               isAuthenticatedOrDemo 
               ? <Navigate to="/dashboard" /> 
-              : <Home setUserState={setUserState} />
+              : <Home setUserState={(state) => {
+                  if (state === UserState.ONBOARDING) {
+                      setIsWalletModalOpen(true);
+                  } else {
+                      setUserState(state);
+                  }
+              }} />
           } />
           
           <Route path="/product" element={<Product />} />

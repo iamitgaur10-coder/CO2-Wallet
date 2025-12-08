@@ -1,6 +1,7 @@
 import React from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -96,7 +97,10 @@ export const Progress = ({ value, max = 100, className }: { value: number, max?:
     )
 }
 
-// 6. Skeleton Loader (New!)
+// 6. Skeleton Loader
 export const Skeleton = ({ className }: { className?: string }) => (
   <div className={cn("animate-pulse rounded-md bg-white/5", className)} />
 );
+
+// 7. Motion Component Wrapper (for animations)
+export const MotionDiv = motion.div;

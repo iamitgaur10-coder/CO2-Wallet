@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Badge, Input, cn } from '../components/UI';
-import { ShieldCheck, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin, Leaf } from 'lucide-react';
+import { Card, Button, Badge, Input, cn, MotionDiv } from '../components/UI';
+import { ShieldCheck, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin, Leaf, RefreshCw } from 'lucide-react';
 import { optimizeRemovalMix } from '../services/gemini';
 import { RemovalRecord, RecommendedRemoval } from '../types';
 
@@ -18,21 +19,41 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
     const [isProcessing, setIsProcessing] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<'card' | 'crypto'>('card');
+    
+    // Quick Removal State
+    const [quickAmount, setQuickAmount] = useState<number | null>(null);
 
     const handleOptimize = async () => {
         setIsLoading(true);
         setRecommendations([]);
         setIsSuccess(false);
+        setQuickAmount(null);
         const recs = await optimizeRemovalMix(debtToNeutralize, parseFloat(budget) || 10);
         setRecommendations(recs);
         setIsLoading(false);
     };
+
+    const handleQuickSelect = (tonnes: number) => {
+        setQuickAmount(tonnes);
+        setRecommendations([{
+             project_id: 'toucan-bct-quick',
+             provider: 'Toucan Protocol',
+             method: 'BCT (Base Carbon Tonne)',
+             amount_kg: tonnes * 1000,
+             cost_usd: tonnes * 2, // Approx $2/ton for BCT
+             reasoning: 'Quick Selection',
+             location: 'Global'
+        }]);
+    }
 
     useEffect(() => {
         if (debtToNeutralize > 0) handleOptimize();
     }, []);
 
     const handleCheckout = async () => {
+        // Haptic Feedback for Luxury Feel (Phase 2)
+        if (navigator.vibrate) navigator.vibrate(50);
+        
         setIsProcessing(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
         
@@ -55,6 +76,9 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
             });
         }
 
+        // Success Haptic
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
         setIsProcessing(false);
         setIsSuccess(true);
     };
@@ -76,19 +100,27 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
                 </p>
                 {isDemo && <p className="text-blue-400 text-sm mb-4">Demo Mode: No actual funds were charged.</p>}
                 
-                {/* Impact Certificate UI */}
-                <div className="relative group max-w-md w-full mx-auto mb-8 transform hover:scale-[1.02] transition-transform duration-500">
+                {/* SOULBOUND NFT CERTIFICATE UI */}
+                <MotionDiv 
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 100 }}
+                    className="relative group max-w-md w-full mx-auto mb-8 transform hover:scale-[1.02] transition-transform duration-500"
+                >
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-xl blur-lg group-hover:blur-xl transition-all opacity-50"></div>
-                    <Card className="relative w-full p-8 bg-[#0D1117] border-2 border-emerald-500/30">
+                    <Card className="relative w-full p-8 bg-[#0D1117] border-2 border-emerald-500/30 overflow-hidden">
+                        {/* Holographic effect */}
+                        <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] bg-[length:250%_100%] animate-[shimmer_3s_infinite]" />
+                        
                         <div className="absolute top-4 right-4">
                             <Leaf className="text-emerald-500 opacity-20" size={64} />
                         </div>
-                        <div className="text-left mb-6">
-                            <h3 className="text-xs font-mono uppercase tracking-[0.2em] text-emerald-500 mb-1">Certificate of Removal</h3>
+                        <div className="text-left mb-6 relative z-10">
+                            <h3 className="text-xs font-mono uppercase tracking-[0.2em] text-emerald-500 mb-1">Soulbound Certificate</h3>
                             <h1 className="text-2xl font-display font-bold text-white">Proof of Impact</h1>
                         </div>
                         
-                        <div className="space-y-4 text-left border-t border-b border-white/10 py-6 mb-6">
+                        <div className="space-y-4 text-left border-t border-b border-white/10 py-6 mb-6 relative z-10">
                              <div className="flex justify-between items-center">
                                 <span className="text-sm text-gray-400">Beneficiary</span>
                                 <span className="font-mono text-white">Carbon Wallet User</span>
@@ -98,24 +130,28 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
                                 <span className="font-mono text-xl text-emerald-400 font-bold">{recommendations.reduce((a,b)=>a+b.amount_kg,0).toFixed(2)} kg</span>
                              </div>
                              <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-400">Vintage</span>
-                                <span className="font-mono text-white">2024/2025 Mixed</span>
+                                <span className="text-sm text-gray-400">Project</span>
+                                <span className="font-mono text-white text-right text-xs max-w-[50%]">{recommendations[0]?.provider || 'Diversified Pool'}</span>
+                             </div>
+                             <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-400">Date</span>
+                                <span className="font-mono text-white">{new Date().toLocaleDateString()}</span>
                              </div>
                         </div>
 
-                        <div className="flex justify-between items-end">
+                        <div className="flex justify-between items-end relative z-10">
                             <div className="text-left">
                                 <div className="text-[10px] text-gray-500 mb-1">ON-CHAIN VERIFICATION</div>
                                 <div className="font-mono text-[10px] text-emerald-600">0x...{Math.random().toString(16).slice(2,10)}</div>
                             </div>
-                            <div className="w-16 h-16 border-2 border-emerald-500/30 rounded-full flex items-center justify-center">
+                            <div className="w-16 h-16 border-2 border-emerald-500/30 rounded-full flex items-center justify-center bg-emerald-900/10">
                                 <div className="w-12 h-12 border border-emerald-500/50 rounded-full flex items-center justify-center">
                                     <div className="text-[8px] font-bold text-emerald-500 rotate-12">VERIFIED</div>
                                 </div>
                             </div>
                         </div>
                     </Card>
-                </div>
+                </MotionDiv>
 
                 <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto">
                     <Button onClick={handleShare} className="flex-1 gap-2 bg-[#1DA1F2] hover:bg-[#1a91da] border-none text-white shadow-lg">
@@ -144,6 +180,24 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
                         <h3 className="text-sm font-bold text-white mb-6">Removal Settings</h3>
                         
                         <div className="space-y-6">
+                             {/* Quick Actions Phase 1 */}
+                             <div>
+                                <label className="text-xs text-muted mb-2 block uppercase tracking-wider">Quick Retire (Tonnes)</label>
+                                <div className="grid grid-cols-4 gap-2">
+                                    {[0.1, 1, 5, 10].map(val => (
+                                        <button 
+                                            key={val}
+                                            onClick={() => handleQuickSelect(val)}
+                                            className={cn("py-2 rounded bg-white/5 border hover:bg-white/10 text-xs font-mono transition-colors", quickAmount === val ? "border-emerald-500 text-emerald-400" : "border-transparent text-gray-400")}
+                                        >
+                                            {val}t
+                                        </button>
+                                    ))}
+                                </div>
+                             </div>
+
+                             <div className="h-px bg-white/10" />
+
                              <div>
                                 <label className="text-xs text-muted mb-2 block uppercase tracking-wider">Target Amount (kg)</label>
                                 <Input 
@@ -161,7 +215,10 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
                                      <Input 
                                         type="number" 
                                         value={budget} 
-                                        onChange={(e) => setBudget(e.target.value)}
+                                        onChange={(e) => {
+                                            setBudget(e.target.value);
+                                            setQuickAmount(null);
+                                        }}
                                         className="pl-8 text-xl font-mono h-12 bg-black border-border focus:border-emerald-500"
                                      />
                                  </div>

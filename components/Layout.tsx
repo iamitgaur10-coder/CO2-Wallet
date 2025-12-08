@@ -38,12 +38,12 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   };
 
   const isLoginPage = location.pathname === '/login';
-  // FIX: Treat DEMO users as Authenticated for Layout purposes so they see the Sidebar
   const showAppLayout = userState === UserState.AUTHENTICATED || userState === UserState.DEMO;
 
   const PublicNav = () => (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/[0.08] bg-[#0D1117]/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 3. NAVBAR FIX: Precise Vertical Alignment (h-20 + flex items-center) */}
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
             <div className="w-9 h-9 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/50 group-hover:shadow-emerald-500/20 transition-all duration-500">
@@ -54,32 +54,32 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
           
           {!isLoginPage && (
               <>
-                <div className="hidden md:flex items-center gap-8 h-full">
+                <div className="hidden md:flex items-center gap-10 h-full">
                     <NavLink 
                       to="/product" 
-                      className={({isActive}) => `text-sm font-medium transition-all duration-200 ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
+                      className={({isActive}) => `text-sm font-medium transition-all duration-300 ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
                     >
                       Product
                     </NavLink>
                     <NavLink 
                       to="/how-it-works" 
-                      className={({isActive}) => `text-sm font-medium transition-all duration-200 ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
+                      className={({isActive}) => `text-sm font-medium transition-all duration-300 ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
                     >
                       How It Works
                     </NavLink>
                     
                     <button 
                       onClick={() => navigate('/login')} 
-                      className="text-sm font-medium text-white/60 hover:text-white transition-all duration-200"
+                      className="text-sm font-medium text-white/60 hover:text-white transition-all duration-300"
                     >
                         Login
                     </button>
 
-                    <div className="pl-4 border-l border-white/10 h-8 flex items-center">
+                    <div className="pl-6 border-l border-white/10 h-8 flex items-center">
                         <Button onClick={() => {
                             setUserState(UserState.ONBOARDING);
                             navigate('/onboarding');
-                        }} className="h-10 px-6 font-bold shadow-md shadow-emerald-900/20 gap-2 text-sm bg-white text-black hover:bg-gray-100 border-none">
+                        }} className="h-10 px-6 font-bold shadow-md shadow-emerald-900/20 gap-2 text-sm bg-white text-black hover:bg-emerald-50 border-none transition-all hover:scale-[1.02]">
                             <WalletIcon size={16} />
                             Connect Wallet
                         </Button>
@@ -190,7 +190,6 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   if (userState === UserState.ONBOARDING || isLoginPage) {
       return (
           <div className="min-h-screen bg-background flex flex-col text-white relative overflow-hidden">
-               {/* Ambient Background for Auth Pages */}
                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/5 blur-[120px] rounded-full -z-10" />
                
                {!isLoginPage && (
@@ -253,7 +252,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                      The first decentralized wallet for your real-world carbon footprint. Built on Polygon.
                  </p>
                  <p className="text-xs text-gray-700">
-                     &copy; 2025 CO2 Wallet Inc.
+                     &copy; 2025 CO2 Wallet Inc. (v2.1.2)
                  </p>
              </div>
         </div>
