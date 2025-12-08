@@ -12,8 +12,7 @@ import {
   LogOut, 
   Menu,
   X,
-  Globe,
-  ArrowRight
+  Wallet as WalletIcon
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -45,12 +44,12 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   const PublicNav = () => (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 bg-[#0D1117]/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-              <span className="text-black font-bold text-lg">C</span>
+        <div className="flex justify-between items-center h-20">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
+            <div className="w-9 h-9 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/50">
+              <Leaf className="text-black fill-black" size={20} />
             </div>
-            <span className="font-display font-bold text-xl tracking-tight text-white">CO₂ Wallet</span>
+            <span className="font-display font-bold text-2xl tracking-tight text-white">CO₂ Wallet</span>
           </div>
           
           {!isLoginPage && (
@@ -58,7 +57,6 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                 <div className="hidden md:flex items-center gap-8">
                     <NavLink to="/product" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>Product</NavLink>
                     <NavLink to="/how-it-works" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>How It Works</NavLink>
-                    <NavLink to="/science" className={({isActive}) => `text-sm font-medium hover:text-white transition-colors ${isActive ? 'text-white' : 'text-gray-400'}`}>Science</NavLink>
                     
                     <button onClick={() => navigate('/login')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                         Login
@@ -67,7 +65,10 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                     <Button onClick={() => {
                         setUserState(UserState.ONBOARDING);
                         navigate('/onboarding');
-                    }}>Get Started</Button>
+                    }} className="h-10 px-6 font-bold shadow-md shadow-emerald-900/20 gap-2">
+                        <WalletIcon size={16} />
+                        Connect Wallet
+                    </Button>
                 </div>
 
                 <div className="md:hidden">
@@ -85,12 +86,11 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
         <div className="md:hidden bg-background border-b border-white/10 py-4 px-4 flex flex-col gap-4 animate-fade-in">
            <NavLink to="/product" className="text-base font-medium text-gray-300">Product</NavLink>
            <NavLink to="/how-it-works" className="text-base font-medium text-gray-300">How It Works</NavLink>
-           <NavLink to="/science" className="text-base font-medium text-gray-300">Science</NavLink>
            <button onClick={() => navigate('/login')} className="text-base font-medium text-gray-300 text-left">Login</button>
            <Button onClick={() => {
                 setUserState(UserState.ONBOARDING);
                 navigate('/onboarding');
-            }} className="w-full">Get Started</Button>
+            }} className="w-full">Connect Wallet</Button>
         </div>
       )}
     </nav>
@@ -108,11 +108,11 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
 
     return (
         <aside className="fixed left-0 top-0 h-screen w-64 bg-surface border-r border-white/5 hidden lg:flex flex-col z-40">
-            <div className="h-16 flex items-center px-6 border-b border-white/5 cursor-pointer" onClick={() => navigate('/dashboard')}>
-                 <div className="w-6 h-6 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded flex items-center justify-center mr-2">
-                    <span className="text-black font-bold text-xs">C</span>
+            <div className="h-20 flex items-center px-6 border-b border-white/5 cursor-pointer" onClick={() => navigate('/dashboard')}>
+                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
+                    <Leaf className="text-black fill-black" size={18} />
                  </div>
-                 <span className="font-display font-bold text-lg text-white">CO₂ Wallet</span>
+                 <span className="font-display font-bold text-xl text-white">CO₂ Wallet</span>
             </div>
             
             <div className="flex-1 py-6 px-3 flex flex-col gap-1">
@@ -120,7 +120,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                     <NavLink
                         key={link.to}
                         to={link.to}
-                        className={({isActive}) => `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? 'bg-white/5 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                        className={({isActive}) => `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${isActive ? 'bg-white/5 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                     >
                         <link.icon size={18} />
                         {link.label}
@@ -131,7 +131,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
             <div className="p-4 border-t border-white/5">
                 <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2 w-full text-left text-gray-400 hover:text-white transition-colors text-sm font-medium">
                     <LogOut size={18} />
-                    Sign Out
+                    Disconnect
                 </button>
             </div>
         </aside>
@@ -178,7 +178,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
                    <div className="p-6">
                      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-                            <span className="text-black font-bold text-lg">C</span>
+                            <Leaf className="text-black fill-black" size={20} />
                         </div>
                      </div>
                    </div>
@@ -194,7 +194,7 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
   return (
     <div className="min-h-screen bg-background text-white selection:bg-emerald-500/30">
       <PublicNav />
-      <div className="pt-16">
+      <div className="pt-20">
         {children}
       </div>
       <footer className="border-t border-white/5 py-12 px-6 bg-surface/30">
@@ -225,9 +225,9 @@ export const Layout: React.FC<LayoutProps> = ({ userState, setUserState, childre
              <div className="col-span-2 md:col-span-1">
                  <h4 className="font-bold mb-4 text-emerald-400">CO₂ Removal Wallet</h4>
                  <p className="text-xs text-gray-500">
-                     Built for Gemini 3 Pro Hackathon.
+                     Built for the Planet.
                      <br />
-                     &copy; 2025 CO2 Wallet Inc. v2.0.1
+                     &copy; 2025 CO2 Wallet Inc.
                  </p>
              </div>
         </div>
