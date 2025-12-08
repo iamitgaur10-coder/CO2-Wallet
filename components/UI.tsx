@@ -95,3 +95,8 @@ export const Progress = ({ value, max = 100, className }: { value: number, max?:
         </div>
     )
 }
+
+// 6. Skeleton Loader (New!)
+export const Skeleton = ({ className }: { className?: string }) => (
+  <div className={cn("animate-pulse rounded-md bg-white/5", className)} />
+);

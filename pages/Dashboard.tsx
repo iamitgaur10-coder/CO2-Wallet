@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Badge, Progress, cn } from '../components/UI';
+import { Card, Button, Badge, Progress, cn, Skeleton } from '../components/UI';
 import { Cloud, Car, Utensils, ShoppingBag, Leaf, Plane, Info, Eye, Loader2, Building } from 'lucide-react';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { EmissionRecord, RemovalRecord } from '../types';
@@ -161,7 +160,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                             </ResponsiveContainer>
                         </div>
                     ) : (
-                        <div className="w-full h-full bg-white/5 animate-pulse rounded" />
+                        <div className="w-full h-full space-y-2">
+                             <Skeleton className="h-full w-full rounded" />
+                        </div>
                     )}
                  </div>
             </Card>
@@ -193,7 +194,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                 </div>
                 
                 <div className="space-y-1">
-                    {activity.slice(0, 6).map((item: any) => (
+                    {!mounted ? (
+                        [1,2,3].map(i => (
+                            <div key={i} className="flex items-center gap-4 p-4">
+                                <Skeleton className="w-10 h-10 rounded-full" />
+                                <div className="space-y-2 flex-1">
+                                    <Skeleton className="h-4 w-32" />
+                                    <Skeleton className="h-3 w-20" />
+                                </div>
+                                <Skeleton className="h-5 w-16" />
+                            </div>
+                        ))
+                    ) : activity.slice(0, 6).map((item: any) => (
                         <div key={item.id} className="flex items-center justify-between p-4 rounded-lg bg-surface border border-transparent hover:border-border transition-all group">
                             <div className="flex items-center gap-4">
                                 <div className={cn("w-10 h-10 rounded-full flex items-center justify-center border border-white/5", item.isRemoval ? 'bg-emerald-500/10 text-emerald-500' : 'bg-white/5 text-muted')}>
@@ -224,7 +236,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ balanceKg, emissions, remo
                             </div>
                         </div>
                     ))}
-                    {activity.length === 0 && (
+                    {mounted && activity.length === 0 && (
                         <div className="py-12 text-center text-muted border border-dashed border-border rounded-lg">
                             No activity yet. Scan a receipt or connect your bank.
                         </div>

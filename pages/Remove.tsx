@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, Input, cn } from '../components/UI';
-import { ShieldCheck, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin } from 'lucide-react';
+import { ShieldCheck, Loader2, Sparkles, CheckCircle2, Lock, ExternalLink, Share2, CreditCard, Bitcoin, Leaf } from 'lucide-react';
 import { optimizeRemovalMix } from '../services/gemini';
 import { RemovalRecord, RecommendedRemoval } from '../types';
 
@@ -67,7 +66,7 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
 
     if (isSuccess) {
         return (
-            <div className="flex flex-col items-center justify-center h-[70vh] text-center animate-fade-in px-4">
+            <div className="flex flex-col items-center justify-center min-h-[70vh] text-center animate-fade-in px-4">
                 <div className="w-24 h-24 bg-emerald-500 rounded-full flex items-center justify-center mb-8 shadow-[0_0_60px_rgba(16,185,129,0.5)]">
                     <CheckCircle2 className="text-black w-12 h-12" strokeWidth={3} />
                 </div>
@@ -77,28 +76,52 @@ export const Remove: React.FC<RemoveProps> = ({ balanceKg, onAddRemoval, isDemo 
                 </p>
                 {isDemo && <p className="text-blue-400 text-sm mb-4">Demo Mode: No actual funds were charged.</p>}
                 
-                <Card className="max-w-md w-full p-6 bg-surface/80 mb-8 border-emerald-500/20">
-                    <div className="flex justify-between items-center mb-4 border-b border-border pb-4">
-                        <span className="text-sm text-muted">Status</span>
-                        <Badge variant="success">Confirmed on Polygon</Badge>
-                    </div>
-                    <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-muted">Transaction Hash</span>
-                        <a href="#" className="text-xs font-mono text-emerald-500 hover:underline flex items-center gap-1">
-                            {recommendations[0]?.project_id.substring(0,8)}...b9 <ExternalLink size={10} />
-                        </a>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted">Certificate NFT</span>
-                        <span className="text-xs text-white">Minted to Vault</span>
-                    </div>
-                </Card>
+                {/* Impact Certificate UI */}
+                <div className="relative group max-w-md w-full mx-auto mb-8 transform hover:scale-[1.02] transition-transform duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-xl blur-lg group-hover:blur-xl transition-all opacity-50"></div>
+                    <Card className="relative w-full p-8 bg-[#0D1117] border-2 border-emerald-500/30">
+                        <div className="absolute top-4 right-4">
+                            <Leaf className="text-emerald-500 opacity-20" size={64} />
+                        </div>
+                        <div className="text-left mb-6">
+                            <h3 className="text-xs font-mono uppercase tracking-[0.2em] text-emerald-500 mb-1">Certificate of Removal</h3>
+                            <h1 className="text-2xl font-display font-bold text-white">Proof of Impact</h1>
+                        </div>
+                        
+                        <div className="space-y-4 text-left border-t border-b border-white/10 py-6 mb-6">
+                             <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-400">Beneficiary</span>
+                                <span className="font-mono text-white">Carbon Wallet User</span>
+                             </div>
+                             <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-400">Total Retired</span>
+                                <span className="font-mono text-xl text-emerald-400 font-bold">{recommendations.reduce((a,b)=>a+b.amount_kg,0).toFixed(2)} kg</span>
+                             </div>
+                             <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-400">Vintage</span>
+                                <span className="font-mono text-white">2024/2025 Mixed</span>
+                             </div>
+                        </div>
 
-                <div className="flex gap-4">
-                    <Button onClick={handleShare} className="gap-2 bg-[#1DA1F2] hover:bg-[#1a91da] border-none text-white shadow-lg">
+                        <div className="flex justify-between items-end">
+                            <div className="text-left">
+                                <div className="text-[10px] text-gray-500 mb-1">ON-CHAIN VERIFICATION</div>
+                                <div className="font-mono text-[10px] text-emerald-600">0x...{Math.random().toString(16).slice(2,10)}</div>
+                            </div>
+                            <div className="w-16 h-16 border-2 border-emerald-500/30 rounded-full flex items-center justify-center">
+                                <div className="w-12 h-12 border border-emerald-500/50 rounded-full flex items-center justify-center">
+                                    <div className="text-[8px] font-bold text-emerald-500 rotate-12">VERIFIED</div>
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto">
+                    <Button onClick={handleShare} className="flex-1 gap-2 bg-[#1DA1F2] hover:bg-[#1a91da] border-none text-white shadow-lg">
                         <Share2 size={16} /> Share on X
                     </Button>
-                    <Button onClick={() => setIsSuccess(false)} variant="secondary">Done</Button>
+                    <Button onClick={() => setIsSuccess(false)} variant="secondary" className="flex-1">Done</Button>
                 </div>
             </div>
         )
