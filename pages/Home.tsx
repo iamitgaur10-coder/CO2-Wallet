@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
-import { Button, Card, MotionDiv, Input, Accordion, Badge } from '../components/UI';
+import { Button, Card, Accordion, Badge, Input } from '../components/UI';
 import { UserState } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { Receipt, Link as LinkIcon, Trophy, ScanLine, Leaf, ShieldCheck, ArrowRight, Mail, CheckCircle2 } from 'lucide-react';
-import { Globe } from '../components/Globe';
+import { ArrowRight, CheckCircle2, Leaf, ShieldCheck, Zap, Globe, Lock } from 'lucide-react';
+import { HeroSpline } from '../components/HeroSpline';
+import { motion } from 'framer-motion';
 
 interface HomeProps {
     setUserState: (s: UserState) => void;
@@ -12,199 +12,183 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ setUserState }) => {
   const navigate = useNavigate();
-  const [mounted, setMounted] = useState(false);
-  const [counter, setCounter] = useState(14205);
+  const [counter, setCounter] = useState(14205.4);
   const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const [joined, setJoined] = useState(false);
 
+  // Auto-increment live counter
   useEffect(() => {
-    setMounted(true);
-    // Fake live counter increment
     const interval = setInterval(() => {
-        setCounter(prev => prev + (Math.random() > 0.7 ? 0.1 : 0));
-    }, 3000);
+        setCounter(prev => prev + 0.01);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  const handleStart = () => {
+  const handleConnect = () => {
+      // Trigger wallet modal via parent state lifting or route param
       setUserState(UserState.ONBOARDING);
       navigate('/onboarding');
   }
 
-  const handleProof = () => {
-      setUserState(UserState.DEMO);
-      navigate('/dashboard');
-  }
-
   const handleWaitlist = (e: React.FormEvent) => {
       e.preventDefault();
-      if(email) setSubscribed(true);
+      if(email) setJoined(true);
   }
 
-  const faqItems = [
-      { title: "Is this secure?", content: "Yes. Moss is non-custodial. We never hold your funds. You interact directly with audited smart contracts on Polygon via Toucan Protocol." },
-      { title: "What is BCT?", content: "BCT (Base Carbon Tonne) is a reference token representing one tonne of carbon verified by Verra and bridged on-chain." },
-      { title: "Is the offset real?", content: "Absolutely. Every retirement burns the token on-chain, creating an immutable proof that can be traced back to the specific carbon removal project registry." }
-  ];
-
   return (
-    <div className="overflow-hidden bg-[#0D1117] relative">
-      {/* 1. THE VOID FIX: Deep Moss Green Gradient Mesh */}
-      <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] bg-emerald-800/20 blur-[120px] rounded-full mix-blend-screen animate-pulse-slow" />
-          <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] bg-teal-900/10 blur-[100px] rounded-full mix-blend-screen" />
-          <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[600px] bg-emerald-950/20 blur-[150px] rounded-full" />
-          {/* Noise texture for "expensive" feel */}
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-      </div>
+    <div className="bg-[#0A0A0A] min-h-screen overflow-x-hidden">
+      
+      {/* SECTION 1: HERO (3D SPLINE) */}
+      <section className="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
+         {/* Background Spline */}
+         <div className="absolute inset-0 z-0 opacity-60">
+             <HeroSpline />
+         </div>
 
-      {/* Hero */}
-      <section className="relative pt-32 pb-40 lg:pt-40 lg:pb-56 px-4 sm:px-6 z-10 flex flex-col items-center">
-        
-        {/* 3D GLOBE INTEGRATION */}
-        <div className="absolute top-0 opacity-20 md:opacity-40 scale-75 md:scale-100 pointer-events-none -z-10">
-            <Globe />
-        </div>
+         {/* Content Overlay */}
+         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center pt-20">
+             <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+             >
+                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/30 border border-emerald-500/20 backdrop-blur-md mb-8">
+                     <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                     </span>
+                     <span className="text-emerald-400 font-mono text-xs font-bold tracking-wider">
+                         LIVE: {counter.toLocaleString(undefined, { minimumFractionDigits: 2 })} TONNES RETIRED
+                     </span>
+                 </div>
 
-        <MotionDiv 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
-        >
-            {/* Live Counter Badge */}
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-900/20 backdrop-blur-md text-emerald-400 text-xs font-mono font-medium mb-10 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                LIVE: {counter.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Tonnes Retired Today—Be Next.
-            </div>
+                 <h1 className="text-5xl md:text-8xl font-display font-bold text-white tracking-tight mb-6 leading-[1.1]">
+                     Offset On-Chain.<br/>
+                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">Flex Forever.</span>
+                 </h1>
 
-            <h1 className="text-6xl sm:text-8xl font-display font-bold tracking-tight leading-[1.05] text-white mb-8 drop-shadow-2xl">
-                Your Wealth is On-Chain.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Your Impact is Real.</span>
-            </h1>
-            
-            <p className="mt-10 text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-                The first decentralized wallet that lets you offset your real-world carbon footprint using Polygon & Toucan Protocol. Verified. Transparent. Immutable.
-            </p>
-            
-            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
-                <Button variant="primary" onClick={handleStart} className="h-14 px-10 text-lg w-full sm:w-auto font-bold shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:shadow-[0_0_50px_rgba(16,185,129,0.4)] transition-all duration-500 transform hover:-translate-y-1">
-                    Start Offsetting
-                </Button>
-                <Button variant="outline" onClick={handleProof} className="h-14 px-10 text-lg w-full sm:w-auto backdrop-blur-md bg-white/[0.02] border-white/10 hover:bg-white/[0.08] transition-all">
-                    View Proof of Impact
-                </Button>
-            </div>
-        </MotionDiv>
+                 <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                     The first non-custodial wallet to bridge your real-world lifestyle with on-chain carbon credits. Powered by Polygon & Toucan.
+                 </p>
+
+                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                     <Button 
+                        onClick={handleConnect} 
+                        className="h-14 px-8 text-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:shadow-[0_0_60px_rgba(16,185,129,0.5)] transition-all w-full sm:w-auto"
+                     >
+                         Connect Wallet
+                     </Button>
+                     <Button 
+                        variant="outline" 
+                        onClick={() => navigate('/how-it-works')}
+                        className="h-14 px-8 text-lg border-white/10 hover:bg-white/5 w-full sm:w-auto"
+                     >
+                         How it Works
+                     </Button>
+                 </div>
+             </motion.div>
+         </div>
       </section>
 
-      {/* Trust Banner */}
-      <section className="relative py-12 border-y border-white/5 bg-white/[0.01] backdrop-blur-sm z-10">
-          <div className="max-w-7xl mx-auto px-6">
-              <p className="text-center text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em] mb-8">Trusted Infrastructure</p>
-              <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-                  {['POLYGON', 'TOUCAN', 'VERRA', 'CHAINLINK'].map(brand => (
-                      <span key={brand} className="text-xl md:text-2xl font-display font-bold text-white tracking-tight cursor-default select-none hover:text-emerald-400 transition-colors">{brand}</span>
+      {/* SECTION 2: HOW IT WORKS (CARDS) */}
+      <section className="py-24 px-6 bg-gradient-to-b from-[#0A0A0A] to-[#0D1117]">
+          <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-16">
+                  <h2 className="text-3xl font-display font-bold text-white mb-4">Carbon Neutrality in 3 Steps</h2>
+                  <p className="text-gray-400">From receipt to retirement in seconds.</p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                  {[
+                      { icon: Zap, title: "1. Calculate", desc: "Upload receipts or take our AI quiz. Gemini 3 Pro estimates your footprint instantly." },
+                      { icon: ShieldCheck, title: "2. Verify", desc: "We source real BCT (Base Carbon Tonnes) from Toucan Protocol on Polygon." },
+                      { icon: Leaf, title: "3. Retire", desc: "Burn tokens on-chain to mint a Soulbound NFT certificate of impact." }
+                  ].map((item, i) => (
+                      <Card key={i} className="p-8 bg-white/[0.02] border-white/5 hover:border-emerald-500/30 transition-all group">
+                          <div className="w-14 h-14 bg-emerald-900/20 rounded-xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform">
+                              <item.icon size={28} />
+                          </div>
+                          <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                          <p className="text-gray-400 leading-relaxed">{item.desc}</p>
+                      </Card>
                   ))}
               </div>
           </div>
       </section>
 
-      {/* How It Works (Infographic) */}
-      <section className="relative py-32 px-6 max-w-7xl mx-auto z-10">
-        <div className="text-center mb-16">
-            <h2 className="text-3xl font-display font-bold text-white mb-4">How It Works</h2>
-            <p className="text-gray-400">Carbon neutrality in 3 simple steps.</p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8 relative">
-             {/* Connecting Line */}
-            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[2px] bg-gradient-to-r from-emerald-500/0 via-emerald-500/20 to-emerald-500/0 z-0"></div>
-
-            {[
-                { icon: ScanLine, title: "1. Scan & Track", text: "Upload receipts or connect your bank. AI calculates your impact." },
-                { icon: Leaf, title: "2. Calculate", text: "We convert your activity into exact CO₂ tonnage." },
-                { icon: ShieldCheck, title: "3. Retire", text: "Burn BCT tokens on-chain and mint your proof NFT." }
-            ].map((step, i) => (
-                <div key={i} className="relative z-10 flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-[#0D1117] border border-emerald-500/30 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.1)]">
-                        <step.icon size={32} className="text-emerald-500" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                    <p className="text-sm text-gray-400 max-w-xs">{step.text}</p>
-                </div>
-            ))}
-        </div>
-      </section>
-
-      {/* NFT Gallery Proof */}
-      <section className="relative py-20 bg-white/[0.02] border-y border-white/5">
-           <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-               <div>
-                   <Badge variant="success" className="mb-4">VERIFIED IMPACT</Badge>
-                   <h2 className="text-4xl font-display font-bold text-white mb-6">Proof you can hold.</h2>
-                   <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                       Don't just donate and hope. Receive a Soulbound NFT Certificate for every tonne you retire. 
-                       Metadata includes Verra serial numbers, project location, and the immutable burn transaction hash.
-                   </p>
-                   <Button variant="outline" onClick={handleProof}>Explore Collection</Button>
-               </div>
-               <div className="relative">
-                   <div className="absolute inset-0 bg-emerald-500/20 blur-[80px] rounded-full" />
-                   {/* Mock NFT Card */}
-                   <div className="relative z-10 bg-[#0D1117]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl">
-                       <div className="aspect-[4/5] bg-gradient-to-br from-emerald-900 to-black rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
-                           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 mix-blend-overlay" />
-                           <Leaf size={64} className="text-emerald-500" />
-                           <div className="absolute bottom-4 left-4 text-xs font-mono text-emerald-400">1.0 TONNE CO2e</div>
-                       </div>
-                       <div className="flex justify-between items-end">
-                           <div>
-                               <div className="text-xs text-gray-500 uppercase">Certificate #8492</div>
-                               <div className="text-white font-bold">Moss Genesis Offset</div>
-                           </div>
-                           <Badge variant="neutral">ERC-721</Badge>
-                       </div>
-                   </div>
-               </div>
-           </div>
-      </section>
-
-      {/* FAQ & Waitlist */}
-      <section className="relative py-24 px-6 max-w-4xl mx-auto z-10">
-          <h2 className="text-3xl font-display font-bold text-center text-white mb-12">Frequently Asked Questions</h2>
-          <Accordion items={faqItems} />
-
-          <div className="mt-24 p-8 md:p-12 rounded-3xl bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">Join 14,000+ Earth Savers</h2>
-              <p className="text-gray-400 mb-8">Get early access to our mobile app and Genesis NFT drops.</p>
-              
-              {!subscribed ? (
-                  <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                      <Input 
-                        placeholder="Enter your email" 
-                        type="email" 
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="bg-black/50 h-12"
-                      />
-                      <Button className="h-12 px-8">Join Waitlist</Button>
-                  </form>
-              ) : (
-                  <div className="bg-emerald-500/10 text-emerald-400 p-4 rounded-lg inline-flex items-center gap-2">
-                      <CheckCircle2 size={18} /> You're on the list! Watch your inbox.
+      {/* SECTION 3: PROOF GALLERY (NFTs) */}
+      <section className="py-24 border-y border-white/5 bg-black/40">
+          <div className="max-w-7xl mx-auto px-6">
+              <div className="flex justify-between items-end mb-12">
+                  <div>
+                      <h2 className="text-3xl font-display font-bold text-white mb-2">Real Proof. On-Chain.</h2>
+                      <p className="text-gray-400">Every retirement mints a verified NFT.</p>
                   </div>
-              )}
+                  <Button variant="ghost" className="hidden sm:flex" onClick={() => window.open('https://opensea.io', '_blank')}>View Collection <ArrowRight size={16} className="ml-2"/></Button>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="group relative aspect-[3/4] rounded-xl overflow-hidden bg-gray-900 border border-white/10 hover:border-emerald-500/50 transition-all cursor-pointer">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${i % 2 === 0 ? 'from-emerald-900/40' : 'from-teal-900/40'} to-black z-0`} />
+                          <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
+                              <div className="flex justify-between">
+                                  <Badge variant="neutral" className="bg-black/50 backdrop-blur">#{8490 + i}</Badge>
+                                  <Globe size={16} className="text-white/40" />
+                              </div>
+                              <div>
+                                  <div className="text-xs text-emerald-400 font-mono mb-1">1.0 TONNE REMOVED</div>
+                                  <div className="font-bold text-white">Moss Genesis</div>
+                              </div>
+                          </div>
+                          {/* Hover Overlay */}
+                          <div className="absolute inset-0 bg-emerald-500/90 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                              <span className="font-bold text-black">View on OpenSea</span>
+                          </div>
+                      </div>
+                  ))}
+              </div>
           </div>
       </section>
 
-      <footer className="py-12 text-center text-gray-600 text-sm">
-          <p className="mb-2">Non-custodial: Your keys, your credits. No funds held.</p>
-      </footer>
+      {/* SECTION 4: FAQ & WAITLIST */}
+      <section className="py-24 px-6 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-display font-bold text-center text-white mb-12">Frequently Asked Questions</h2>
+          <Accordion items={[
+              { title: "Is this non-custodial?", content: "Yes. We never hold your funds. You interact directly with the Polygon blockchain via your own wallet." },
+              { title: "What are the gas fees?", content: "We build on Polygon (PoS), so gas fees are typically less than $0.01 per transaction." },
+              { title: "How is the carbon verified?", content: "We use Toucan Protocol, which bridges Verra-verified carbon credits onto the blockchain as BCT/NCT tokens." },
+              { title: "Can I sell the NFT?", content: "No. The proof-of-impact NFTs are Soulbound (non-transferable) to prevent double-counting." }
+          ]} />
+
+          <div className="mt-24 text-center">
+              <div className="p-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl">
+                  <div className="bg-[#0D1117] rounded-xl p-8 md:p-12">
+                      <h2 className="text-3xl font-bold text-white mb-4">Join the Movement</h2>
+                      <p className="text-gray-400 mb-8">Get early access to the mobile app and Genesis drops.</p>
+                      
+                      {!joined ? (
+                          <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                              <Input 
+                                placeholder="Enter your email" 
+                                type="email" 
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="h-12 bg-black/50 border-white/10 focus:border-emerald-500"
+                              />
+                              <Button className="h-12 px-8 bg-white text-black hover:bg-gray-200">Join Waitlist</Button>
+                          </form>
+                      ) : (
+                          <div className="inline-flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-6 py-3 rounded-lg">
+                              <CheckCircle2 size={20} /> You are on the list!
+                          </div>
+                      )}
+                      <p className="mt-6 text-xs text-gray-600">No spam. Unsubscribe anytime.</p>
+                  </div>
+              </div>
+          </div>
+      </section>
     </div>
   );
 };

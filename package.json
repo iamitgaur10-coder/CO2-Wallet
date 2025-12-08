@@ -1,7 +1,7 @@
 {
-  "name": "co2-wallet",
+  "name": "moss-wallet",
   "private": true,
-  "version": "2.2.0",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,8 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.2.0",
     "@google/genai": "latest",
+    "@splinetool/react-spline": "^2.2.6",
+    "@splinetool/runtime": "^1.0.55",
     "@supabase/supabase-js": "^2.39.7",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.8",
